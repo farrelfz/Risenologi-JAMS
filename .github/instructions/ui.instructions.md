@@ -1,10 +1,10 @@
-# AI Rules
+# UI Instructions
 
 ## Purpose
-Set boundaries for safe and useful AI-assisted development.
+Set rules for future UI design and implementation.
 
 ## Scope
-Applies to all AI-generated plans, documentation, code, tests, database changes, and operational changes.
+Applies to Tailwind, shadcn/ui, accessibility, layout, components, and visual QA.
 
 ## Status
 Draft foundation.

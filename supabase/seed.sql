@@ -1,0 +1,5 @@
+-- Title: Supabase Seed Placeholder
+-- Purpose: Reserve the seed file location for future local development data.
+-- Scope: Engineering foundation only; no schema or data is defined.
+-- Status: Placeholder.
+-- TODO: Add seed data only after the approved database schema exists.

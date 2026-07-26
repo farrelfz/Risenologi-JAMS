@@ -1,10 +1,10 @@
-# AI Rules
+# Engineering Instructions
 
 ## Purpose
-Set boundaries for safe and useful AI-assisted development.
+Guide contributors toward production-grade engineering practices.
 
 ## Scope
-Applies to all AI-generated plans, documentation, code, tests, database changes, and operational changes.
+Applies to code, configuration, documentation, and review work.
 
 ## Status
 Draft foundation.

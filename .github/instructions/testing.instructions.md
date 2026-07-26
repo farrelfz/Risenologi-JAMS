@@ -1,10 +1,10 @@
-# AI Rules
+# Testing Instructions
 
 ## Purpose
-Set boundaries for safe and useful AI-assisted development.
+Define expectations for future test strategy and validation.
 
 ## Scope
-Applies to all AI-generated plans, documentation, code, tests, database changes, and operational changes.
+Applies to unit, integration, end-to-end, accessibility, security, and regression tests.
 
 ## Status
 Draft foundation.
