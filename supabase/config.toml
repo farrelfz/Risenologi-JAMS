@@ -1,0 +1,5 @@
+# Supabase local configuration placeholder.
+# Purpose: reserve the expected configuration location without initializing a Supabase project.
+# Scope: engineering foundation only; no project identifiers, schemas, or functions are defined here.
+# Status: placeholder.
+# TODO: Generate Supabase configuration after the database architecture is approved.

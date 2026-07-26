@@ -1,10 +1,10 @@
-# AI Rules
+# Deployment Instructions
 
 ## Purpose
-Set boundaries for safe and useful AI-assisted development.
+Define expectations for future release and operations work.
 
 ## Scope
-Applies to all AI-generated plans, documentation, code, tests, database changes, and operational changes.
+Applies to Vercel, Supabase, environment variables, CI/CD, monitoring, and rollback plans.
 
 ## Status
 Draft foundation.

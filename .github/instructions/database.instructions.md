@@ -1,10 +1,10 @@
-# AI Rules
+# Database Instructions
 
 ## Purpose
-Set boundaries for safe and useful AI-assisted development.
+Set rules for future database design and migrations.
 
 ## Scope
-Applies to all AI-generated plans, documentation, code, tests, database changes, and operational changes.
+Applies to Supabase schema, migrations, policies, seeds, and data access documentation.
 
 ## Status
 Draft foundation.
