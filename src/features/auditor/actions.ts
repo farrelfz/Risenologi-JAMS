@@ -1,7 +1,6 @@
 "use server";
 
 import { createClient } from "@supabase/supabase-js";
-import { revalidatePath } from "next/cache";
 
 export interface IndicatorEvidence {
   code: string;
@@ -46,7 +45,7 @@ export async function lookupCrossref(queryOrDoi: string) {
 
     const res = await fetch(url, {
       headers: {
-        "User-Agent": "RisenologiJAMS-AIAuditor/1.0 (mailto:admin@journal.unj.ac.id)",
+        "User-Agent": "RisenologiJAMS-AIAuditor/1.0 (mailto:risenologikpm@unj.ac.id)",
       },
     });
 
@@ -95,7 +94,7 @@ export async function lookupCrossref(queryOrDoi: string) {
 export async function runFullJournalAudit(): Promise<AuditAnalysisResult> {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SECRET_KEY!,
+    process.env.SUPABASE_SECRET_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   );
 
   const [
@@ -160,13 +159,13 @@ export async function runFullJournalAudit(): Promise<AuditAnalysisResult> {
   const intlEdBoard = allEdBoard.filter((e: any) => e.negara && e.negara !== "Indonesia").length;
   const edBoardIntlRatio = allEdBoard.length > 0 ? intlEdBoard / allEdBoard.length : 0;
 
-  // Evidence Items calculation
+  // Evidence Items calculation according to 134/E/KPT/2021 Instrument (Total 100 Poin: 48 Mgt, 52 Sub)
   const evidenceItems: IndicatorEvidence[] = [];
 
   // DE
   evidenceItems.push({
     code: "DE",
-    name: "Desk Evaluation (8 Syarat Wajib)",
+    name: "Desk Evaluation (8 Syarat Mutlak)",
     group: "Administratif",
     score: passedDesk,
     maxScore: 8,
@@ -178,42 +177,45 @@ export async function runFullJournalAudit(): Promise<AuditAnalysisResult> {
     verificationStatus: deskEvaluationPassed ? "TERVERIFIKASI" : "PARSIAL",
     recommendation: deskEvaluationPassed
       ? "Prasyarat administratif lulus 100%. Jurnal siap dinilai pada tahap substansi tanpa risiko gugur otomatis."
-      : "Segera selesaikan item desk evaluation yang belum tercentang agar tidak gugur di tahap verifikasi awal.",
+      : "Segera selesaikan item desk evaluation yang belum tercentang agar tidak gugur di meja sekretariat.",
   });
 
-  // 1 / A
+  // I. Penamaan Jurnal (Max 2.0 Poin)
+  const namaJurnal = journal?.nama || "Risenologi";
+  const isTooBroad = namaJurnal.toLowerCase().includes("risenologi") || namaJurnal.toLowerCase().includes("bunga rampai");
+  const scorePenamaan = isTooBroad ? 1.0 : 2.0;
   evidenceItems.push({
-    code: "1 / A",
+    code: "UNSUR I",
     name: "Penamaan Jurnal",
     group: "Management",
-    score: journal?.nama ? 2.0 : 1.0,
+    score: scorePenamaan,
     maxScore: 2.0,
-    confidence: 0.9,
-    evidenceText: `Nama terdaftar: "${journal?.nama || "Risenologi"}". Konsisten dengan e-ISSN terdaftar BRIN.`,
-    source: "Portal Resmi ISSN BRIN & Profil JAMS",
-    verificationStatus: journal?.nama ? "TERVERIFIKASI" : "PARSIAL",
+    confidence: 0.95,
+    evidenceText: `Nama terdaftar: "${namaJurnal}". Terdaftar ISSN 2502-5643 / e-ISSN 2720-9571. Temuan Asesor: Nama masih dianggap multidisiplin terlalu luas.`,
+    source: "Portal Resmi ISSN BRIN & Evaluasi Asesor",
+    verificationStatus: isTooBroad ? "PARSIAL" : "TERVERIFIKASI",
     recommendation:
-      "Cakupan keilmuan pada judul jurnal sudah memenuhi preferensi penilaian ARJUNA.",
+      "Pertegas sub-bidang spesifik di halaman 'About the Journal' & header untuk memaksimalkan skor ke 2.0 Poin.",
   });
 
-  // 2 / B
+  // II. Kelembagaan Penerbit (Max 4.0 Poin)
   const hasPenerbit = journal?.penerbit && journal.penerbit.trim().length > 0;
   evidenceItems.push({
-    code: "2 / B",
+    code: "UNSUR II",
     name: "Kelembagaan Penerbit",
     group: "Management",
     score: hasPenerbit ? 3.0 : 1.0,
-    maxScore: 5.0,
-    confidence: 0.85,
-    evidenceText: `Diterbitkan oleh: "${journal?.penerbit || "Belum diisi"}". Terdata di Portal Dikti/BRIN.`,
-    source: "Profil Kelembagaan Penerbit & Organisasi",
-    verificationStatus: hasPenerbit ? "PARSIAL" : "BELUM_DIVERIFIKASI",
-    recommendation: hasPenerbit
-      ? "Unggah naskah MoU kerjasama resmi dengan Organisasi Profesi ilmiah untuk meraih skor maksimal 5.0 Poin."
-      : "Lengkapi identitas lembaga penerbit di Pengaturan Jurnal.",
+    maxScore: 4.0,
+    confidence: 0.9,
+    evidenceText: `Diterbitkan oleh: "${journal?.penerbit || "LPPM Universitas Negeri Jakarta"}". Perguruan Tinggi terakreditasi.`,
+    source: "Profil Kelembagaan Penerbit & Dokumen Kerjasama",
+    verificationStatus: "PARSIAL",
+    recommendation:
+      "Unggah naskah MoU kerjasama resmi dengan Organisasi Profesi ilmiah (OPI) nasional/internasional untuk meraih skor maksimal 4.0 Poin penuh.",
   });
 
-  // 3A
+  // III. Penyuntingan dan Manajemen (Max 19.0 Poin)
+  // 3A: Mitra Bestari (Max 6.0)
   const score3A =
     reviewerCountries.length >= 4 && reviewerIntlRatio > 0.5
       ? 6.0
@@ -221,22 +223,20 @@ export async function runFullJournalAudit(): Promise<AuditAnalysisResult> {
         ? 4.0
         : 2.0;
   evidenceItems.push({
-    code: "3A",
+    code: "UNSUR III-A",
     name: "Mitra Bestari (Reviewer)",
     group: "Management",
     score: score3A,
     maxScore: 6.0,
     confidence: 1.0,
-    evidenceText: `${allReviewers.length} Mitra Bestari terdaftar dari ${reviewerCountries.length} negara (${reviewerCountries.join(", ") || "Indonesia"}). Rasio internasional: ${(reviewerIntlRatio * 100).toFixed(0)}%.`,
-    source: "Register Mitra Bestari JAMS",
+    evidenceText: `${allReviewers.length} Mitra Bestari terdaftar dari ${reviewerCountries.length} negara (${reviewerCountries.join(", ") || "Indonesia"}). Temuan Asesor: Wajib menampilkan daftar reviewer di website OJS.`,
+    source: "Register Mitra Bestari JAMS & Website OJS",
     verificationStatus: score3A === 6.0 ? "TERVERIFIKASI" : "PARSIAL",
     recommendation:
-      score3A === 6.0
-        ? "Kualifikasi & sebaran geografis reviewer telah memenuhi ambang batas Sinta 1 & Scopus."
-        : `Rekrut reviewer dari minimal ${Math.max(0, 4 - reviewerCountries.length)} negara luar negeri (misal: MY, JP, AU, US) untuk meraih 6.0 Poin penuh.`,
+      "Tampilkan halaman 'Reviewer Acknowledgement' / 'Peer Reviewers' publik di OJS & rekrut reviewer dari minimal 4 negara.",
   });
 
-  // 3B
+  // 3B: Dewan Penyunting (Max 5.0)
   const score3B =
     edBoardCountries.length >= 4 && edBoardIntlRatio > 0.5
       ? 5.0
@@ -244,112 +244,119 @@ export async function runFullJournalAudit(): Promise<AuditAnalysisResult> {
         ? 3.0
         : 1.0;
   evidenceItems.push({
-    code: "3B",
+    code: "UNSUR III-B",
     name: "Dewan Penyunting (Editorial Board)",
     group: "Management",
     score: score3B,
     maxScore: 5.0,
     confidence: 1.0,
-    evidenceText: `${allEdBoard.length} Dewan Penyunting terdaftar dari ${edBoardCountries.length} negara (${edBoardCountries.join(", ") || "Indonesia"}). Rasio internasional: ${(edBoardIntlRatio * 100).toFixed(0)}%.`,
+    evidenceText: `${allEdBoard.length} Dewan Penyunting terdaftar dari ${edBoardCountries.length} negara. Editor wajib memiliki rekam jejak Scopus/Scholar 5 tahun terakhir.`,
     source: "Register Dewan Penyunting JAMS",
     verificationStatus: score3B === 5.0 ? "TERVERIFIKASI" : "PARSIAL",
     recommendation:
-      score3B === 5.0
-        ? "Keanggotaan Dewan Penyunting terverifikasi internasional."
-        : "Tambahkan editor Bereputasi (Scopus h-index) dari minimal 2–4 negara berbeda untuk menaikkan skor ke 5.0 Poin.",
+      "Pastikan setiap editor memiliki link Google Scholar / Scopus ID di halaman Editorial Team OJS.",
   });
 
-  // 3C-3F (Gaya, OJS, Petunjuk)
+  // 3C-3F: Review Substantif, Guidelines, Gaya, OJS Workflow (Max 8.0)
   evidenceItems.push({
-    code: "3C-3F",
-    name: "Petunjuk Penulis, Format & OJS",
+    code: "UNSUR III-C..F",
+    name: "Manajemen OJS, Author Guidelines & Review Substantif",
     group: "Management",
-    score: 6.5,
+    score: 6.0,
     maxScore: 8.0,
-    confidence: 0.8,
-    evidenceText:
-      "Sistem OJS 3.3 terintegrasi aktif, template naskah (.docx) dan konsistensi gaya selingkung terverifikasi.",
-    source: "Audit Sistem OJS & Template Selingkung",
-    verificationStatus: "TERVERIFIKASI",
-    recommendation: "Pertahankan kejelasan petunjuk penulisan dan transparansi etika publikasi.",
-  });
-
-  // G1-G10
-  evidenceItems.push({
-    code: "G",
-    name: "Penampilan & Keberkalaan",
-    group: "Management",
-    score: 7.0,
-    maxScore: 11.0,
     confidence: 0.85,
-    evidenceText: `${(editions || []).length} edisi terbitan dikelola berkala (2 nomor/tahun) dengan tata letak & PDF yang rapi.`,
-    source: "Arsip Edisi Terbitan & Tata Letak PDF",
+    evidenceText:
+      "Workflow OJS 3.3 aktif full online (Submission -> Review -> Revision -> Publishing). Temuan Asesor: Pastikan reviewer memberikan komentar ilmiah substantif (bukan sekadar typo/spasi).",
+    source: "Audit Alur Kerja OJS & Catatan Asesor",
     verificationStatus: "PARSIAL",
     recommendation:
-      "Jaga ketepatan jadwal terbit online per semester untuk mempertahankan skor 11.0 Poin.",
+      "Tingkatkan kualitas formulir peninjauan mitra bestari agar fokus pada novelty, metodologi, dan kedalaman analisis.",
   });
 
-  // 8A-8C
+  // VI & VII. Penampilan & Keberkalaan (Max 11.0 Poin: 7 Penampilan + 4 Keberkalaan)
+  evidenceItems.push({
+    code: "UNSUR VI & VII",
+    name: "Penampilan Website & Keberkalaan Terbitan",
+    group: "Management",
+    score: 8.0,
+    maxScore: 11.0,
+    confidence: 0.9,
+    evidenceText: `Terbit berkala 2 edisi/tahun (April & Desember). Desain website custom header terpasang.`,
+    source: "Arsip Edisi OJS & Layout PDF",
+    verificationStatus: "PARSIAL",
+    recommendation:
+      "Jaga konsistensi jadwal terbit online dan jumlah artikel per volume (target ≥100 halaman/volume).",
+  });
+
+  // VIII. Penyebarluasan (Max 12.0 Poin)
   const doiRatio = allArticles.length > 0 ? articlesWithDoi.length / allArticles.length : 0;
   const score8C = doiRatio >= 1 ? 1.0 : doiRatio > 0.5 ? 0.5 : 0;
   evidenceItems.push({
-    code: "H (8A-8C)",
-    name: "Penyebarluasan & DOI Crossref",
+    code: "UNSUR VIII",
+    name: "Penyebarluasan, Indexing & DOI Crossref",
     group: "Management",
-    score: 6.0 + score8C,
+    score: 7.0 + score8C,
     maxScore: 12.0,
-    confidence: 0.9,
-    evidenceText: `Terindeks di DOAJ & Crossref. Sebanyak ${articlesWithDoi.length} dari ${allArticles.length} artikel (${(doiRatio * 100).toFixed(0)}%) ber-DOI aktif.`,
-    source: "Registri DOI Resmi Crossref Indonesia",
+    confidence: 0.95,
+    evidenceText: `Terindeks di Google Scholar, Garuda, Dimensions, & Crossref (Prefix 10.47028 / 10.21009). ${articlesWithDoi.length}/${allArticles.length} artikel ber-DOI aktif.`,
+    source: "Registri Pengindeksan & DOI Crossref",
     verificationStatus: doiRatio >= 1 ? "TERVERIFIKASI" : "PARSIAL",
     recommendation:
-      doiRatio >= 1
-        ? "100% artikel memiliki DOI aktif yang terdaftar di Crossref."
-        : `Lengkapi pendaftaran DOI untuk ${allArticles.length - articlesWithDoi.length} artikel sisanya agar indikator Identitas Unik mencapai 100%.`,
+      "Tingkatkan pengindeksan ke DOAJ dan pastikan seluruh artikel baru terdaftar DOI-nya secara otomatis.",
   });
 
-  // 4A-4C (Substance)
+  // IV & V. SUBSTANSI ARTIKEL & GAYA PENULISAN (Max 52.0 Poin: 41 Substansi + 11 Penulisan)
+  // IV-1..5: Scope, Aspirasi Wawasan, Novelty, Sitasi
   evidenceItems.push({
-    code: "4A-4C",
-    name: "Cakupan Keilmuan & Aspirasi Wawasan",
+    code: "UNSUR IV (1-5)",
+    name: "Substansi: Scope, Wawasan Penulis, Novelty & Sitasi",
     group: "Substance",
-    score: 4.0,
-    maxScore: 20.0,
-    confidence: 0.7,
+    score: 14.0,
+    maxScore: 27.0,
+    confidence: 0.8,
     evidenceText:
-      "Fokus keilmuan spesifik (4.0 Poin). Sebaran negara penulis masih didominasi domestik (1.0 Poin).",
-    source: "Statistik Penulis & Sitasi Crossref / Scholar",
+      "Temuan Asesor: Tingkatkan orisinalitas/kebaruan (novelty) artikel, manfaat keilmuan, dan kolaborasi penulis luar negeri (>5 negara). Target sitasi >30 sitasi.",
+    source: "Statistik Sitasi Dimensions & Crossref",
     verificationStatus: "PARSIAL",
     recommendation:
-      "Undang penulis dari minimal 5 negara luar negeri untuk mendongkrak 8.0 Poin penuh pada Aspirasi Wawasan.",
+      "Lakukan pendampingan substansi artikel dari penentuan kebaruan judul hingga penegasan kontribusi ilmiah.",
   });
 
-  // 4D-4N (Per-Artikel)
+  // IV-6..9 & V: Referensi Primer (>80%), Kemutakhiran (<=10th), Analisis/Sintesis & Gaya Penulisan
   const articlesComplete = allArticles.filter(
     (a: any) => a.abstrak && a.abstrak.length > 100,
   ).length;
-  const scorePerArtikel = Math.round((articlesComplete / Math.max(1, allArticles.length)) * 18.0);
+  const scoreSubstansiLanjutan = Math.round((articlesComplete / Math.max(1, allArticles.length)) * 18.0);
   evidenceItems.push({
-    code: "4D-4N",
-    name: "Komponen Mutu Per-Artikel",
+    code: "UNSUR IV (6-9) & V",
+    name: "Substansi: Pustaka Primer, Kemutakhiran, Analisis & Gaya Penulisan",
     group: "Substance",
-    score: Math.max(10, scorePerArtikel),
-    maxScore: 31.0,
-    confidence: 0.8,
-    evidenceText: `${articlesComplete} dari ${allArticles.length} artikel terbitan memiliki abstrak komprehensif & struktur IMRaD terstruktur.`,
-    source: "Evaluasi Mutu Naskah & Pustaka Primer",
+    score: Math.max(12, scoreSubstansiLanjutan),
+    maxScore: 25.0,
+    confidence: 0.85,
+    evidenceText:
+      "Temuan Asesor: Wajibkan proporsi referensi primer >80% dari jurnal ilmiah terbitan ≤10 tahun terakhir. Analisis & pembahasan harus membandingkan penelitian & teori.",
+    source: "Audit Pustaka & Gaya Selingkung (Mendeley/Zotero)",
     verificationStatus: "PARSIAL",
     recommendation:
-      "Wajibkan >85% pustaka rujukan berasal dari jurnal ilmiah primer terbitan 10 tahun terakhir.",
+      "Wajibkan penulis menggunakan manajemen referensi (Mendeley/Zotero) dan gaya sitasi baku (APA/Harvard).",
   });
 
-  const managementScore = evidenceItems
-    .filter((i) => i.group === "Management")
-    .reduce((s, i) => s + i.score, 0);
-  const substanceScore = evidenceItems
-    .filter((i) => i.group === "Substance")
-    .reduce((s, i) => s + i.score, 0);
-  const overallScore = managementScore + substanceScore;
+  const managementScore = Number(
+    evidenceItems
+      .filter((i) => i.group === "Management")
+      .reduce((s, i) => s + i.score, 0)
+      .toFixed(1),
+  );
+
+  const substanceScore = Number(
+    evidenceItems
+      .filter((i) => i.group === "Substance")
+      .reduce((s, i) => s + i.score, 0)
+      .toFixed(1),
+  );
+
+  const overallScore = Number((managementScore + substanceScore).toFixed(1));
 
   return {
     timestamp: new Date().toISOString(),

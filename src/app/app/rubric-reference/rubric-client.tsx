@@ -297,11 +297,11 @@ export function RubricClient() {
             <Filter className="h-5 w-5" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-medium text-muted-foreground truncate">Management</p>
+            <p className="text-xs font-medium text-muted-foreground truncate">Manajemen (48 Poin)</p>
             <div className="flex items-baseline gap-1 mt-0.5">
-              <span className="text-2xl font-black text-blue-500">49</span>
+              <span className="text-2xl font-black text-blue-500">48</span>
               <span className="text-[11px] text-muted-foreground font-normal">
-                poin (A+B+C+G+H)
+                poin (Unsur I–III, VI–VIII)
               </span>
             </div>
           </div>
@@ -312,10 +312,10 @@ export function RubricClient() {
             <Sparkles className="h-5 w-5" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-medium text-muted-foreground truncate">Substance</p>
+            <p className="text-xs font-medium text-muted-foreground truncate">Substansi (52 Poin)</p>
             <div className="flex items-baseline gap-1 mt-0.5">
-              <span className="text-2xl font-black text-purple-500">51</span>
-              <span className="text-[11px] text-muted-foreground font-normal">poinartikel</span>
+              <span className="text-2xl font-black text-purple-500">52</span>
+              <span className="text-[11px] text-muted-foreground font-normal">poin (Unsur IV & V)</span>
             </div>
           </div>
         </div>
