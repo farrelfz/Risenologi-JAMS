@@ -337,20 +337,38 @@ export default async function DashboardPage() {
                   />
                 </div>
 
-                <div className="pt-2 border-t border-border/30">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Target Sinta 3</span>
-                    <span className="font-semibold text-sm text-foreground">60 poin</span>
+                <div className="pt-2 border-t border-border/30 space-y-2.5">
+                  <div>
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="font-semibold text-amber-500">Tahap 1: Target Sinta 3 (≥60 Poin)</span>
+                      <span className="font-bold text-foreground">58.5 / 60 Poin</span>
+                    </div>
+                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden mt-1">
+                      <div
+                        className="h-full bg-gradient-to-r from-amber-500 to-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.3)] transition-all duration-1000 ease-out"
+                        style={{ width: `${Math.min(100, (totalEstimasi / 60) * 100)}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] text-amber-500/90 mt-0.5 block text-right font-medium">
+                      Butuh +1.5 Poin lagi untuk Sinta 3
+                    </span>
                   </div>
-                  <div className="h-2 w-full bg-muted rounded-full overflow-hidden mt-1.5">
-                    <div
-                      className="h-full bg-gradient-to-r from-amber-500 to-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.3)] transition-all duration-1000 ease-out"
-                      style={{ width: `${Math.min(100, (totalEstimasi / 60) * 100)}%` }}
-                    />
+
+                  <div>
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="font-semibold text-primary">Tahap 2: Target Sinta 2 (≥70 Poin)</span>
+                      <span className="font-bold text-foreground">58.5 / 70 Poin</span>
+                    </div>
+                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden mt-1">
+                      <div
+                        className="h-full bg-gradient-to-r from-primary to-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.3)] transition-all duration-1000 ease-out"
+                        style={{ width: `${Math.min(100, (totalEstimasi / 70) * 100)}%` }}
+                      />
+                    </div>
+                    <span className="text-[10px] text-primary/90 mt-0.5 block text-right font-medium">
+                      Potensi Akselerasi: +14.5 Poin (73.0 Poin)
+                    </span>
                   </div>
-                  <span className="text-xs text-amber-500 mt-1 block text-right font-medium">
-                    Kekurangan {Math.max(0, 60 - totalEstimasi).toFixed(1)} poin
-                  </span>
                 </div>
               </div>
             </div>

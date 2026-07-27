@@ -38,15 +38,15 @@ export function Header({ profile, statusSinta }: HeaderProps) {
     ? statusSinta.replace("_", " ").toUpperCase()
     : "SINTA 4";
 
-  let targetBadgeText = "Target Sinta 2 / Sinta 1";
+  let targetBadgeText = "Target Sinta 3 (≥60) & Sinta 2 (≥70)";
   if (statusSinta === "sinta_3") {
-    targetBadgeText = "Target Sinta 2 (≥70 Poin) / Sinta 1";
+    targetBadgeText = "Target Sinta 2 (≥70 Poin)";
   } else if (statusSinta === "sinta_2") {
     targetBadgeText = "Target Sinta 1 (≥85 Poin)";
   } else if (statusSinta === "sinta_1") {
     targetBadgeText = "Sinta 1 Bereputasi (Scopus Target)";
   } else if (statusSinta === "sinta_5" || statusSinta === "sinta_6") {
-    targetBadgeText = "Target Akselerasi Sinta 4 / Sinta 2";
+    targetBadgeText = "Target Sinta 4 (≥50) & Sinta 3 (≥60)";
   }
 
   return (
@@ -63,8 +63,9 @@ export function Header({ profile, statusSinta }: HeaderProps) {
           <h2 className="text-lg font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground to-foreground/70">
             {pageTitle}
           </h2>
-          <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary shadow-sm">
-            <Sparkles className="h-3 w-3 text-primary animate-pulse" /> Status: {sintaFormatted} &rarr; {targetBadgeText}
+          <span className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[11px] font-bold text-primary shadow-sm whitespace-nowrap">
+            <Sparkles className="h-3.5 w-3.5 text-primary animate-pulse shrink-0" />
+            <span>Status: {sintaFormatted} (58.5 Poin) &rarr; {targetBadgeText}</span>
           </span>
         </div>
       </div>

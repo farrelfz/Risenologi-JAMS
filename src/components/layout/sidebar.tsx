@@ -188,17 +188,18 @@ export function Sidebar({ profile }: SidebarProps) {
 
       <div className="p-3 border-t border-border/30">
         <div className="px-3 py-2.5 bg-muted/20 backdrop-blur-md rounded-xl border border-border/50 text-xs text-muted-foreground">
-          <p className="font-semibold text-foreground mb-1 text-xs">Estimasi Kesiapan</p>
-          <div className="flex justify-between text-[10px] mb-1.5">
-            <span>Sinta 4 (sekarang)</span>
-            <span className="text-primary font-medium">Target: Sinta 3</span>
+          <p className="font-semibold text-foreground mb-1 text-xs">Estimasi Kesiapan Akreditasi</p>
+          <div className="flex justify-between text-[10px] mb-1 font-medium">
+            <span>Sinta 4 (58.5 Poin)</span>
+            <span className="text-primary font-bold">Target: Sinta 3 (≥60)</span>
           </div>
-          <div className="h-1.5 w-full bg-secondary/50 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-primary to-blue-400 w-1/3 rounded-full" />
+          <div className="h-1.5 w-full bg-secondary/50 rounded-full overflow-hidden mb-1">
+            <div className="h-full bg-gradient-to-r from-primary to-blue-400 w-[97.5%] rounded-full transition-all duration-500" />
           </div>
-          <p className="text-[10px] mt-1.5 text-muted-foreground/70 italic">
-            * Estimasi AI — bukan skor resmi Arjuna
-          </p>
+          <div className="flex justify-between text-[9px] text-muted-foreground/80 font-medium">
+            <span>Kekurangan: +1.5 Poin lagi</span>
+            <span className="text-blue-500 font-semibold">Sinta 2: ≥70 Poin</span>
+          </div>
           <p className="text-[10px] mt-1 text-foreground/80 font-medium border-t border-border/20 pt-1.5 truncate">
             © 2026 Muhamad Farrel Dava Fauzan
           </p>
