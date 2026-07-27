@@ -43,7 +43,7 @@ const RUBRIC_DATA: RubricItem[] = [
       "Memenuhi 8/8 syarat: ISSN valid, URL aktif, Etika COPE, Akun Demo, Minimal 5 artikel PDF/edisi, Terbit rutin.",
     partialCriteria: "Kurang dari 8 syarat terpenuhi.",
     minimalCriteria: "Tidak memenuhi syarat dasar.",
-    dataSource: "Desk Evaluation Checklist (`desk_evaluation_checks`)",
+    dataSource: "Checklist Kelayakan Desk Evaluation",
     tips: "Gagal 1 syarat saja menyebabkan jurnal GUGUR otomatis di meja sekretariat sebelum dinilai asesor.",
   },
 
@@ -482,7 +482,7 @@ export function RubricClient() {
                             <span className="font-semibold text-foreground">
                               Sumber Data di JAMS:
                             </span>
-                            <code>{item.dataSource}</code>
+                            <span className="font-medium text-foreground">{item.dataSource}</span>
                           </div>
                           <div className="flex items-center gap-2 text-primary font-medium">
                             <Sparkles className="h-3.5 w-3.5" />
