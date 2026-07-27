@@ -399,17 +399,25 @@ export async function sendCommunication(actionId: string, subject: string, body:
   }
 
   // ---------------------------------------------------------------------------
-  // REAL SMTP EMAIL DISPATCH (GMAIL SMTP - risenologikpm@unj.ac.id)
+  // REAL SMTP EMAIL DISPATCH (OUTLOOK / OFFICE 365 - risenologikpm@unj.ac.id)
   // ---------------------------------------------------------------------------
   let providerMessageId = `smtp_${Date.now()}`;
   try {
+    const isSecure = process.env.SMTP_SECURE === "true";
+    const port = Number(process.env.SMTP_PORT) || 587;
+    const host = process.env.SMTP_HOST || "smtp.office365.com";
+
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || "smtp.gmail.com",
-      port: Number(process.env.SMTP_PORT) || 465,
-      secure: process.env.SMTP_SECURE !== "false",
+      host,
+      port,
+      secure: isSecure,
       auth: {
         user: process.env.SMTP_USER || "risenologikpm@unj.ac.id",
         pass: process.env.SMTP_PASS || "rbwsmvvnsvtqrnjl",
+      },
+      tls: {
+        ciphers: "SSLv3",
+        rejectUnauthorized: false,
       },
     });
 
@@ -425,9 +433,9 @@ export async function sendCommunication(actionId: string, subject: string, body:
     if (info && info.messageId) {
       providerMessageId = info.messageId;
     }
-    console.log("✅ [REAL GMAIL SMTP DISPATCH SUCCESS] Message ID:", providerMessageId);
+    console.log("✅ [REAL OUTLOOK SMTP DISPATCH SUCCESS] Message ID:", providerMessageId);
   } catch (smtpErr: any) {
-    console.error("❌ [REAL GMAIL SMTP DISPATCH FAILED]:", smtpErr?.message || smtpErr);
+    console.error("❌ [REAL OUTLOOK SMTP DISPATCH FAILED]:", smtpErr?.message || smtpErr);
     const failReason = `Gagal mengirim email via SMTP: ${smtpErr?.message || "Kesalahan koneksi SMTP"}`;
     await supabase
       .from("communication_action")
