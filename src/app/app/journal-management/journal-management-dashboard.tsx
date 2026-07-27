@@ -282,10 +282,33 @@ function computeAccreditationData(data: ManagementData): ManagementCategory[] {
       ],
     },
 
+    // ── UNSUR V: GAYA PENULISAN (11 Poin) ────────────────────────────────
+    {
+      code: "UNSUR V",
+      name: "E. Gaya Penulisan & Konsistensi Format",
+      group: "Substance",
+      maxScore: 11,
+      icon: BookOpen,
+      indicators: [
+        {
+          code: "5 / E",
+          name: "Gaya Penulisan, Tata Letak & Konsistensi Selingkung",
+          score: 8.0,
+          maxScore: 11,
+          confidence: 0.9,
+          detail: "Konsistensi template PDF, penyuntingan bahasa, dan tata letak selingkung Risenologi = 8.0 Poin.",
+          status: "partial",
+          targetRoute: "/app/manuscripts",
+          targetActionText: "Verifikasi Template Selingkung & PDF",
+          verificationSource: "Pedoman Selingkung & Layout PDF Risenologi",
+        },
+      ],
+    },
+
     // ── UNSUR VI & VII: PENAMPILAN & KEBERKALAAN (11 Poin) ───────────────
     {
       code: "UNSUR VI & VII",
-      name: "E. Penampilan Website & Keberkalaan Edisi",
+      name: "F. Penampilan Website & Keberkalaan Edisi",
       group: "Management",
       maxScore: 11,
       icon: Layout,
@@ -308,7 +331,7 @@ function computeAccreditationData(data: ManagementData): ManagementCategory[] {
     // ── UNSUR VIII: PENYEBARLUASAN (12 Poin) ────────────────────────────
     {
       code: "UNSUR VIII",
-      name: "F. Penyebarluasan, Indexing & DOI",
+      name: "G. Penyebarluasan, Indexing & DOI",
       group: "Management",
       maxScore: 12,
       icon: Globe,
