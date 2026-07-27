@@ -63,10 +63,6 @@ export function Header({ profile, statusSinta }: HeaderProps) {
           <h2 className="text-lg font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-foreground via-foreground to-foreground/70">
             {pageTitle}
           </h2>
-          <span className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[11px] font-bold text-primary shadow-sm whitespace-nowrap">
-            <Sparkles className="h-3.5 w-3.5 text-primary animate-pulse shrink-0" />
-            <span>Status: {sintaFormatted} (58.5 Poin) &rarr; {targetBadgeText}</span>
-          </span>
         </div>
       </div>
 
