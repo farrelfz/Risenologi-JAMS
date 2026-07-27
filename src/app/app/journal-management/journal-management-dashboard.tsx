@@ -422,10 +422,23 @@ export function JournalManagementDashboard({ data }: { data: ManagementData }) {
 
   const overallScore = Number((mgtScore + subScore).toFixed(1));
 
-  // Dynamic Sinta Target calculation
+  // Dynamic Sinta Target calculation from Journal Settings
   const statusSinta = data.journal?.status_sinta || "sinta_4";
+  const targetSintaKey = data.journal?.target_sinta || "sinta_2";
   const sintaFormatted = statusSinta.replace("_", " ").toUpperCase();
-  const targetSintaScore = 70.0; // Target Sinta 2
+
+  const sintaTargetMap: Record<string, { label: string; minScore: number }> = {
+    sinta_1: { label: "Sinta 1", minScore: 85.0 },
+    sinta_2: { label: "Sinta 2", minScore: 70.0 },
+    sinta_3: { label: "Sinta 3", minScore: 60.0 },
+    sinta_4: { label: "Sinta 4", minScore: 50.0 },
+    sinta_5: { label: "Sinta 5", minScore: 40.0 },
+    sinta_6: { label: "Sinta 6", minScore: 30.0 },
+  };
+
+  const targetInfo = sintaTargetMap[targetSintaKey] || { label: "Sinta 2", minScore: 70.0 };
+  const targetSintaScore = targetInfo.minScore;
+  const targetSintaLabel = targetInfo.label;
   const gapScore = Number(Math.max(0, targetSintaScore - overallScore).toFixed(1));
 
   return (
@@ -462,7 +475,7 @@ export function JournalManagementDashboard({ data }: { data: ManagementData }) {
               <span className="text-3xl font-black text-foreground">{overallScore}</span>
               <span className="text-sm font-semibold text-muted-foreground">/ 100</span>
             </div>
-            <span className="text-[11px] text-emerald-600 font-semibold block">Status: {sintaFormatted} &rarr; Target Sinta 2 (&ge;70 Poin)</span>
+            <span className="text-[11px] text-emerald-600 font-semibold block">Status: {sintaFormatted} &rarr; Target: {targetSintaLabel} (&ge;{targetSintaScore} Poin)</span>
           </div>
           <div className="p-3 rounded-2xl bg-primary/10 text-primary shrink-0">
             <Award className="h-6 w-6" />
@@ -521,15 +534,15 @@ export function JournalManagementDashboard({ data }: { data: ManagementData }) {
             </div>
             <div>
               <h3 className="font-extrabold text-foreground text-base">
-                Rekomendasi Taktis Akselerasi Target Sinta 2 (&ge;70 Poin)
+                Rekomendasi Taktis Akselerasi Target {targetSintaLabel} (&ge;{targetSintaScore} Poin)
               </h3>
               <p className="text-xs text-muted-foreground">
-                Kekurangan saat ini: <strong className="text-primary">{gapScore} Poin</strong>. Lakukan 5 langkah taktis berikut untuk mendongkrak skor hingga <strong>+14.5 Poin</strong>.
+                Kekurangan saat ini menuju {targetSintaLabel}: <strong className="text-primary">{gapScore} Poin</strong> (Skor Real saat ini: {overallScore} Poin). Lakukan langkah taktis berikut untuk mendongkrak skor.
               </p>
             </div>
           </div>
           <span className="text-xs font-bold text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full shrink-0">
-            Potensi Kenaikan: +14.5 Poin
+            Target Kalibrasi: {targetSintaLabel}
           </span>
         </div>
 

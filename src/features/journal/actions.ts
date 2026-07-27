@@ -63,6 +63,13 @@ export async function updateJournalSettings(formData: FormData) {
 
   revalidatePath("/app/settings");
   revalidatePath("/app/dashboard");
+  revalidatePath("/app/journal-management");
+  revalidatePath("/app/simulator");
+  revalidatePath("/app/indicators");
+  revalidatePath("/app/intelligence");
+  revalidatePath("/app/recommendations");
+  revalidatePath("/app/risk-detection");
+  revalidatePath("/app/internationalization");
 
   return { success: true };
 }

@@ -178,6 +178,19 @@ export default async function DashboardPage() {
 
   const sintaPrediction = predictSinta(totalEstimasi, confOverall, isDeskEvalPassed);
 
+  // Dynamic Sinta Target calculation from Journal Settings
+  const targetSintaKey = journal?.target_sinta || "sinta_3";
+  const sintaTargetMap: Record<string, { label: string; minScore: number }> = {
+    sinta_1: { label: "Sinta 1", minScore: 85.0 },
+    sinta_2: { label: "Sinta 2", minScore: 70.0 },
+    sinta_3: { label: "Sinta 3", minScore: 60.0 },
+    sinta_4: { label: "Sinta 4", minScore: 50.0 },
+    sinta_5: { label: "Sinta 5", minScore: 40.0 },
+    sinta_6: { label: "Sinta 6", minScore: 30.0 },
+  };
+  const configuredTarget = sintaTargetMap[targetSintaKey] || { label: "Sinta 3", minScore: 60.0 };
+  const gapTargetScore = Number(Math.max(0, configuredTarget.minScore - totalEstimasi).toFixed(1));
+
   // Alerts
   const isReviewerCritical = reviewerCountries.length < 4 || intlRatio <= 0.5;
 
@@ -340,33 +353,17 @@ export default async function DashboardPage() {
                 <div className="pt-2 border-t border-border/30 space-y-2.5">
                   <div>
                     <div className="flex justify-between items-center text-xs">
-                      <span className="font-semibold text-amber-500">Tahap 1: Target Sinta 3 (≥60 Poin)</span>
-                      <span className="font-bold text-foreground">58.5 / 60 Poin</span>
+                      <span className="font-semibold text-primary">Target Pengaturan: {configuredTarget.label} (≥{configuredTarget.minScore} Poin)</span>
+                      <span className="font-bold text-foreground">{totalEstimasi.toFixed(1)} / {configuredTarget.minScore} Poin</span>
                     </div>
                     <div className="h-2 w-full bg-muted rounded-full overflow-hidden mt-1">
                       <div
-                        className="h-full bg-gradient-to-r from-amber-500 to-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.3)] transition-all duration-1000 ease-out"
-                        style={{ width: `${Math.min(100, (totalEstimasi / 60) * 100)}%` }}
-                      />
-                    </div>
-                    <span className="text-[10px] text-amber-500/90 mt-0.5 block text-right font-medium">
-                      Butuh +1.5 Poin lagi untuk Sinta 3
-                    </span>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="font-semibold text-primary">Tahap 2: Target Sinta 2 (≥70 Poin)</span>
-                      <span className="font-bold text-foreground">58.5 / 70 Poin</span>
-                    </div>
-                    <div className="h-2 w-full bg-muted rounded-full overflow-hidden mt-1">
-                      <div
-                        className="h-full bg-gradient-to-r from-primary to-blue-400 shadow-[0_0_10px_rgba(59,130,246,0.3)] transition-all duration-1000 ease-out"
-                        style={{ width: `${Math.min(100, (totalEstimasi / 70) * 100)}%` }}
+                        className="h-full bg-gradient-to-r from-primary via-blue-400 to-emerald-400 shadow-[0_0_10px_rgba(59,130,246,0.3)] transition-all duration-1000 ease-out"
+                        style={{ width: `${Math.min(100, (totalEstimasi / configuredTarget.minScore) * 100)}%` }}
                       />
                     </div>
                     <span className="text-[10px] text-primary/90 mt-0.5 block text-right font-medium">
-                      Potensi Akselerasi: +14.5 Poin (73.0 Poin)
+                      {gapTargetScore === 0 ? "Target Terlampaui!" : `Kekurangan ${gapTargetScore} Poin untuk ${configuredTarget.label}`}
                     </span>
                   </div>
                 </div>

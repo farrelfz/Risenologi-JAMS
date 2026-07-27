@@ -21,7 +21,17 @@ import type { UserProfile } from "@/features/accreditation/types";
 
 interface SidebarProps {
   profile: Pick<UserProfile, "role">;
+  targetSinta?: string | null;
 }
+
+const sintaTargetMap: Record<string, { label: string; minScore: number }> = {
+  sinta_1: { label: "Sinta 1", minScore: 85.0 },
+  sinta_2: { label: "Sinta 2", minScore: 70.0 },
+  sinta_3: { label: "Sinta 3", minScore: 60.0 },
+  sinta_4: { label: "Sinta 4", minScore: 50.0 },
+  sinta_5: { label: "Sinta 5", minScore: 40.0 },
+  sinta_6: { label: "Sinta 6", minScore: 30.0 },
+};
 
 const NAVIGATION = [
   {
@@ -118,8 +128,14 @@ const NAVIGATION = [
   },
 ];
 
-export function Sidebar({ profile }: SidebarProps) {
+export function Sidebar({ profile, targetSinta }: SidebarProps) {
   const pathname = usePathname();
+
+  const targetKey = targetSinta || "sinta_2";
+  const targetInfo = sintaTargetMap[targetKey] || { label: "Sinta 2", minScore: 70.0 };
+  const currentScore = 58.5;
+  const pct = Math.min(100, Math.round((currentScore / targetInfo.minScore) * 100));
+  const gap = Number(Math.max(0, targetInfo.minScore - currentScore).toFixed(1));
 
   return (
     <div
@@ -190,15 +206,18 @@ export function Sidebar({ profile }: SidebarProps) {
         <div className="px-3 py-2.5 bg-muted/20 backdrop-blur-md rounded-xl border border-border/50 text-xs text-muted-foreground">
           <p className="font-semibold text-foreground mb-1 text-xs">Estimasi Kesiapan Akreditasi</p>
           <div className="flex justify-between text-[10px] mb-1 font-medium">
-            <span>Sinta 4 (58.5 Poin)</span>
-            <span className="text-primary font-bold">Target: Sinta 3 (≥60)</span>
+            <span>Sinta 4 ({currentScore} Poin)</span>
+            <span className="text-primary font-bold">Target: {targetInfo.label}</span>
           </div>
           <div className="h-1.5 w-full bg-secondary/50 rounded-full overflow-hidden mb-1">
-            <div className="h-full bg-gradient-to-r from-primary to-blue-400 w-[97.5%] rounded-full transition-all duration-500" />
+            <div
+              className="h-full bg-gradient-to-r from-primary to-blue-400 rounded-full transition-all duration-500"
+              style={{ width: `${pct}%` }}
+            />
           </div>
           <div className="flex justify-between text-[9px] text-muted-foreground/80 font-medium">
-            <span>Kekurangan: +1.5 Poin lagi</span>
-            <span className="text-blue-500 font-semibold">Sinta 2: ≥70 Poin</span>
+            <span>{gap === 0 ? "Target Terlampaui" : `Kekurangan: +${gap} Poin`}</span>
+            <span className="text-blue-500 font-semibold">Min: ≥{targetInfo.minScore} Poin</span>
           </div>
           <p className="text-[10px] mt-1 text-foreground/80 font-medium border-t border-border/20 pt-1.5 truncate">
             © 2026 Muhamad Farrel Dava Fauzan

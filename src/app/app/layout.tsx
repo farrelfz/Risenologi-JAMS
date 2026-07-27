@@ -23,13 +23,13 @@ export default async function AppLayout({
 
   const { data: journal } = await supabase
     .from("journals")
-    .select("status_sinta")
+    .select("status_sinta, target_sinta")
     .limit(1)
     .single();
 
   return (
     <div suppressHydrationWarning className="flex min-h-screen bg-transparent">
-      <Sidebar profile={profile} />
+      <Sidebar profile={profile} targetSinta={journal?.target_sinta} />
       <div suppressHydrationWarning className="flex-1 flex flex-col min-w-0">
         <Header profile={profile} statusSinta={journal?.status_sinta} />
         <main suppressHydrationWarning className="flex-1 overflow-auto p-6 md:p-8">
