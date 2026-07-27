@@ -11,10 +11,10 @@ if (!supabaseUrl || !supabaseSecretKey) {
 const supabase = createClient(supabaseUrl, supabaseSecretKey);
 
 const editorsData = [
-  // 6 Academic / Senior Editors dengan NIP (Instansi: Universitas Negeri Jakarta)
+  // 6 Academic / Senior Editors (Instansi: Universitas Negeri Jakarta) - tanpa NIP
   {
     nama: "Taryudi, Ph.D.",
-    jabatan: "Senior Editor (NIP: 198008062010121002)",
+    jabatan: "Editor",
     afiliasi: "Universitas Negeri Jakarta (UNJ)",
     email: "taryudi@unj.ac.id",
     negara: "ID",
@@ -23,7 +23,7 @@ const editorsData = [
   },
   {
     nama: "Dr. Nur’aeni Marta, S.S., M.Hum.",
-    jabatan: "Senior Editor (NIP: 197109222001122001)",
+    jabatan: "Editor",
     afiliasi: "Universitas Negeri Jakarta (UNJ)",
     email: "nuraeni.marta@unj.ac.id",
     negara: "ID",
@@ -32,7 +32,7 @@ const editorsData = [
   },
   {
     nama: "Muh. Takdir, M.Pd.",
-    jabatan: "Associate Editor (NIP: 198808072024061002)",
+    jabatan: "Editor",
     afiliasi: "Universitas Negeri Jakarta (UNJ)",
     email: "muh.takdir@unj.ac.id",
     negara: "ID",
@@ -41,7 +41,7 @@ const editorsData = [
   },
   {
     nama: "Fauzi Bakri, M.Si.",
-    jabatan: "Senior Editor (NIP: 197107161998031002)",
+    jabatan: "Editor",
     afiliasi: "Universitas Negeri Jakarta (UNJ)",
     email: "fauzi.bakri@unj.ac.id",
     negara: "ID",
@@ -50,7 +50,7 @@ const editorsData = [
   },
   {
     nama: "Imam Nursyahied, S.Pd., M.Pd.",
-    jabatan: "Associate Editor (NIP: 199212092024061003)",
+    jabatan: "Editor",
     afiliasi: "Universitas Negeri Jakarta (UNJ)",
     email: "imam.nursyahied@unj.ac.id",
     negara: "ID",
@@ -59,7 +59,7 @@ const editorsData = [
   },
   {
     nama: "Sigit Pramono, S.S., M.Hum.",
-    jabatan: "Associate Editor (NIP: 199003162024061001)",
+    jabatan: "Editor",
     afiliasi: "Universitas Negeri Jakarta (UNJ)",
     email: "sigit.pramono@unj.ac.id",
     negara: "ID",
@@ -143,7 +143,7 @@ const editorsData = [
 ];
 
 async function runSeed() {
-  console.log("🚀 Starting Editor Registry Seeding...\n");
+  console.log("🚀 Starting Clean Editor Registry Update (No NIP)...\n");
 
   const { data: journal } = await supabase.from("journals").select("id").limit(1).single();
   const journalId = journal?.id;
@@ -153,53 +153,32 @@ async function runSeed() {
     process.exit(1);
   }
 
+  // Delete existing records to clean up NIP entries
+  await supabase.from("editorial_board_members").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+
   let countMembers = 0;
-  let countBoard = 0;
 
   for (const ed of editorsData) {
-    // 1. Insert/Upsert into editorial_board_members
-    const { error: err1 } = await supabase.from("editorial_board_members").upsert(
-      {
-        journal_id: journalId,
-        nama: ed.nama,
-        jabatan: ed.jabatan,
-        afiliasi: ed.afiliasi,
-        email: ed.email,
-        negara: ed.negara,
-        kualifikasi_internasional: ed.kualifikasi_internasional,
-        status_aktif: ed.status_aktif,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "id" },
-    );
+    const { error } = await supabase.from("editorial_board_members").insert({
+      journal_id: journalId,
+      nama: ed.nama,
+      jabatan: ed.jabatan,
+      afiliasi: ed.afiliasi,
+      email: ed.email,
+      negara: ed.negara,
+      kualifikasi_internasional: ed.kualifikasi_internasional,
+      status_aktif: ed.status_aktif,
+    });
 
-    if (err1) {
-      console.warn(`Warning editorial_board_members for ${ed.nama}:`, err1.message);
+    if (error) {
+      console.warn(`Warning inserting ${ed.nama}:`, error.message);
     } else {
       countMembers++;
     }
-
-    // 2. Insert/Upsert into editorial_board (view or table)
-    const { error: err2 } = await supabase.from("editorial_board").upsert(
-      {
-        journal_id: journalId,
-        nama: ed.nama,
-        jabatan: ed.jabatan,
-        afiliasi: ed.afiliasi,
-        email: ed.email,
-        negara: ed.negara,
-        kualifikasi_internasional: ed.kualifikasi_internasional,
-        status_aktif: ed.status_aktif,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "id" },
-    );
-
-    if (!err2) countBoard++;
   }
 
-  console.log(`✅ Seeded ${countMembers} editors to editorial_board_members!`);
-  console.log(`🎉 Editor Registry Successfully Updated!`);
+  console.log(`✅ Successfully updated ${countMembers} clean editor entries (without NIP)!`);
+  console.log(`🎉 Editor Registry Cleaned & Updated!`);
 }
 
 runSeed();
