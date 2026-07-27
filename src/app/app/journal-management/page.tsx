@@ -4,9 +4,9 @@ import { createClient } from "@supabase/supabase-js";
 import { JournalManagementDashboard } from "./journal-management-dashboard";
 
 export const metadata: Metadata = {
-  title: "Tata Kelola Jurnal",
+  title: "Tata Kelola Jurnal — Evaluasi & Peta Verifikasi 100 Poin",
   description:
-    "Progress bar per kategori rubrik Management (49 poin): A, B, C, G, H — berdasarkan data real.",
+    "Peta penilaian interaktif seluruh 8 unsur akreditasi Permendikbudristek 134/E/KPT/2021 untuk Jurnal Risenologi dengan link verifikasi langsung.",
 };
 
 async function getManagementData() {
@@ -21,12 +21,16 @@ async function getManagementData() {
     { data: editorialBoard },
     { data: editions },
     { data: articles },
+    { data: deskEval },
+    { data: articleAuthors },
   ] = await Promise.all([
     supabase.from("journals").select("*").limit(1).single(),
     supabase.from("reviewers").select("*"),
     supabase.from("editorial_board").select("*"),
     supabase.from("editions").select("*"),
-    supabase.from("articles").select("id, doi, status"),
+    supabase.from("articles").select("id, judul, doi, status, abstrak"),
+    supabase.from("desk_evaluation_checks").select("*").limit(1).single(),
+    supabase.from("article_authors").select("id, nama, negara, afiliasi"),
   ]);
 
   return {
@@ -35,6 +39,8 @@ async function getManagementData() {
     editorialBoard: editorialBoard || [],
     editions: editions || [],
     articles: articles || [],
+    deskEval: deskEval || null,
+    articleAuthors: articleAuthors || [],
   };
 }
 

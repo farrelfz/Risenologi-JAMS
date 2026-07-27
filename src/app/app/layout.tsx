@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUserProfile } from "@/features/auth/actions";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
+import { createClient } from "@supabase/supabase-js";
 
 export default async function AppLayout({
   children,
@@ -14,11 +15,23 @@ export default async function AppLayout({
     redirect("/sign-in");
   }
 
+  // Fetch journal status_sinta from database
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SECRET_KEY!,
+  );
+
+  const { data: journal } = await supabase
+    .from("journals")
+    .select("status_sinta")
+    .limit(1)
+    .single();
+
   return (
     <div suppressHydrationWarning className="flex min-h-screen bg-transparent">
       <Sidebar profile={profile} />
       <div suppressHydrationWarning className="flex-1 flex flex-col min-w-0">
-        <Header profile={profile} />
+        <Header profile={profile} statusSinta={journal?.status_sinta} />
         <main suppressHydrationWarning className="flex-1 overflow-auto p-6 md:p-8">
           <div suppressHydrationWarning className="max-w-7xl mx-auto">
             {children}

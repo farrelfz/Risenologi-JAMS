@@ -33,14 +33,17 @@ export interface IndicatorItem {
 }
 
 interface IndicatorInteractiveListProps {
-  indicators: IndicatorItem[];
-  totalScore: number;
+  initialIndicators: IndicatorItem[];
+  totalScore?: number;
 }
 
 export function IndicatorInteractiveList({
-  indicators,
+  initialIndicators,
   totalScore,
 }: IndicatorInteractiveListProps) {
+  const indicators = initialIndicators;
+  const calculatedTotal =
+    totalScore ?? Number(indicators.reduce((s, i) => s + i.currentScore, 0).toFixed(1));
   const [selectedIndicator, setSelectedIndicator] = useState<IndicatorItem | null>(null);
 
   const getStatusIcon = (status: string) => {
@@ -94,7 +97,7 @@ export function IndicatorInteractiveList({
           <div className="flex flex-col items-end">
             <div className="text-xs text-muted-foreground mb-0.5">Estimasi Skor Akreditasi</div>
             <div className="flex items-center gap-2">
-              <span className="text-3xl font-black text-primary">{totalScore}</span>
+              <span className="text-3xl font-black text-primary">{calculatedTotal}</span>
               <span className="text-sm text-muted-foreground font-semibold">/ 100 Poin</span>
             </div>
           </div>
