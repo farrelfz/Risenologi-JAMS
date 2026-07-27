@@ -1,0 +1,25 @@
+name: Security Rules
+version: "1.0"
+
+authentication:
+  provider: supabase_auth
+  session: http_only_cookie_via_ssr
+  mfa: recommended
+
+authorization:
+  model: rbac
+  valid_roles: [administrator, journal_manager, editor]
+  invalid_roles: [author, reviewer, anonymous]
+  enforcement: every_server_action
+
+secrets:
+  forbidden_in_client:
+    - SUPABASE_SERVICE_ROLE_KEY
+    - DATABASE_URL
+  allowed_in_client:
+    - NEXT_PUBLIC_SUPABASE_URL
+    - NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+storage:
+  access: authenticated_only
+  policies: rls_required

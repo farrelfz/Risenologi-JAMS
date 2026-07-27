@@ -1,0 +1,38 @@
+name: Backend Rules
+version: "1.0"
+
+repository:
+  allow:
+    - select
+    - insert
+    - update
+    - delete
+    - raw_sql_via_supabase_rpc
+  deny:
+    - validation_logic
+    - business_logic
+    - permission_checks
+    - calling_other_repositories
+
+service:
+  allow:
+    - business_logic
+    - orchestration
+    - permission_enforcement
+    - calling_repository_methods
+    - domain_event_emission
+  deny:
+    - direct_database_access
+    - ui_concerns
+    - http_responses
+
+actions:
+  allow:
+    - zod_validation
+    - rbac_check
+    - service_invocation
+    - revalidatePath
+    - redirect
+  deny:
+    - direct_database_access
+    - business_logic

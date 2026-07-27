@@ -1,0 +1,22 @@
+table: journals
+schema: public
+rls: true
+
+columns:
+  id: { type: uuid, primary: true, default: gen_random_uuid() }
+  title: { type: text, nullable: false }
+  issn_print: { type: text, nullable: true }
+  issn_online: { type: text, nullable: true }
+  status: { type: text, nullable: false, check: "status IN ('active','inactive','suspended')" }
+  created_at: { type: timestamptz, default: now() }
+  updated_at: { type: timestamptz, default: now() }
+
+indexes:
+  - columns: [status]
+  - columns: [issn_print]
+    unique: true
+
+policies:
+  - name: internal_access
+    for: ALL
+    using: "auth.jwt() ->> 'role' IN ('administrator', 'journal_manager', 'editor')"

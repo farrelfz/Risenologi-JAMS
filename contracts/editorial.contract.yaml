@@ -1,0 +1,28 @@
+feature: editorial
+version: "1.0"
+
+inputs:
+  record_decision:
+    manuscript_id: { type: uuid, required: true }
+    decision: { type: enum, values: [accept, revise, reject], required: true }
+    notes: { type: string, required: false }
+
+outputs:
+  record_decision:
+    decisionId: { type: uuid }
+    recordedAt: { type: timestamp }
+
+permissions:
+  create: [administrator, journal_manager, editor]
+  read: [administrator, journal_manager, editor]
+  update: [administrator]
+  delete: [administrator]
+
+events:
+  - EditorialDecisionRecorded
+  - ManuscriptStatusChanged
+
+errors:
+  - DECISION_NOT_FOUND
+  - MANUSCRIPT_NOT_IN_REVIEW
+  - PERMISSION_DENIED

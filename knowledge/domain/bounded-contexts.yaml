@@ -1,0 +1,20 @@
+contexts:
+  journal:
+    owns: [journals, journal_volumes, journal_issues]
+    integrates_with: [manuscript, publication]
+
+  manuscript:
+    owns: [manuscripts, manuscript_files, manuscript_authors]
+    integrates_with: [journal, editorial]
+
+  editorial:
+    owns: [editorial_decisions, review_cycles]
+    integrates_with: [manuscript]
+
+  publication:
+    owns: [publications]
+    integrates_with: [manuscript, journal]
+
+  auth:
+    owns: [users, sessions, roles]
+    integrates_with: [all]

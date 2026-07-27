@@ -1,0 +1,22 @@
+{
+  "JournalRepository": {
+    "file": "src/features/journal/repository.ts",
+    "table": "journals",
+    "methods": ["findAll", "findById", "create", "update", "delete"]
+  },
+  "ManuscriptRepository": {
+    "file": "src/features/manuscript/repository.ts",
+    "table": "manuscripts",
+    "methods": ["findAll", "findById", "create", "update", "delete"]
+  },
+  "EditorialRepository": {
+    "file": "src/features/editorial/repository.ts",
+    "table": "editorial_decisions",
+    "methods": ["findAll", "findByManuscriptId", "create", "update"]
+  },
+  "PublicationRepository": {
+    "file": "src/features/publication/repository.ts",
+    "table": "publications",
+    "methods": ["findAll", "findById", "create", "update"]
+  }
+}

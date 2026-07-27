@@ -1,0 +1,6 @@
+feature: publication
+registry: registry/features.json
+spec: specs/publication/
+contract: contracts/publication.contract.yaml
+rules: rules/architecture.yaml
+validators: validators/

@@ -1,0 +1,14 @@
+{
+  "public": [],
+  "authenticated": [
+    { "path": "/dashboard", "roles": ["administrator", "journal_manager", "editor"] },
+    { "path": "/journals", "roles": ["administrator", "journal_manager", "editor"] },
+    { "path": "/journals/[id]", "roles": ["administrator", "journal_manager", "editor"] },
+    { "path": "/manuscripts", "roles": ["administrator", "journal_manager", "editor"] },
+    { "path": "/manuscripts/[id]", "roles": ["administrator", "journal_manager", "editor"] },
+    { "path": "/editorial", "roles": ["administrator", "journal_manager", "editor"] },
+    { "path": "/publications", "roles": ["administrator", "journal_manager"] },
+    { "path": "/admin", "roles": ["administrator"] },
+    { "path": "/admin/users", "roles": ["administrator"] }
+  ]
+}

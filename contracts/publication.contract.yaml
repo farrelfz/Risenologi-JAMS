@@ -1,0 +1,30 @@
+feature: publication
+version: "1.0"
+
+inputs:
+  publish:
+    manuscript_id: { type: uuid, required: true }
+    volume: { type: string, required: true }
+    issue: { type: string, required: true }
+    published_date: { type: date, required: true }
+    doi: { type: string, required: false }
+
+outputs:
+  publish:
+    publicationId: { type: uuid }
+    publishedAt: { type: timestamp }
+
+permissions:
+  create: [administrator, journal_manager]
+  read: [administrator, journal_manager, editor]
+  update: [administrator, journal_manager]
+  delete: [administrator]
+
+events:
+  - ArticlePublished
+  - DOIAssigned
+
+errors:
+  - PUBLICATION_NOT_FOUND
+  - MANUSCRIPT_NOT_ACCEPTED
+  - PERMISSION_DENIED

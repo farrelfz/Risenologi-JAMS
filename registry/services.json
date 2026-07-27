@@ -1,0 +1,22 @@
+{
+  "JournalService": {
+    "file": "src/features/journal/service.ts",
+    "repository": "JournalRepository",
+    "methods": ["findAll", "findById", "create", "update", "archive", "delete"]
+  },
+  "ManuscriptService": {
+    "file": "src/features/manuscript/service.ts",
+    "repository": "ManuscriptRepository",
+    "methods": ["findAll", "findById", "create", "update", "submitForReview", "delete"]
+  },
+  "EditorialService": {
+    "file": "src/features/editorial/service.ts",
+    "repository": "EditorialRepository",
+    "methods": ["findAll", "findByManuscript", "recordDecision"]
+  },
+  "PublicationService": {
+    "file": "src/features/publication/service.ts",
+    "repository": "PublicationRepository",
+    "methods": ["findAll", "findById", "publish", "unpublish"]
+  }
+}

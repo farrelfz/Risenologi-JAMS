@@ -1,0 +1,29 @@
+feature: manuscript
+version: "1.0"
+
+inputs:
+  create:
+    journal_id: { type: uuid, required: true }
+    title: { type: string, required: true }
+    abstract: { type: string, required: true }
+    status: { type: enum, values: [draft, under_review, accepted, rejected, published] }
+
+outputs:
+  create:
+    manuscriptId: { type: uuid }
+
+permissions:
+  create: [administrator, journal_manager, editor]
+  read: [administrator, journal_manager, editor]
+  update: [administrator, journal_manager, editor]
+  delete: [administrator, journal_manager]
+
+events:
+  - ManuscriptCreated
+  - ManuscriptStatusChanged
+  - ManuscriptDeleted
+
+errors:
+  - MANUSCRIPT_NOT_FOUND
+  - INVALID_STATUS_TRANSITION
+  - PERMISSION_DENIED

@@ -1,0 +1,20 @@
+feature: journal
+
+pages:
+  - path: /journals
+    type: list
+    components: [JournalTable, JournalFilters, CreateJournalButton]
+  - path: /journals/[id]
+    type: detail
+    components: [JournalHeader, JournalMetadata, JournalActions]
+  - path: /journals/[id]/edit
+    type: form
+    components: [JournalForm]
+
+components:
+  JournalTable:
+    columns: [title, issn_print, issn_online, status, created_at]
+    features: [pagination, search, filter_by_status]
+  JournalForm:
+    fields: [title, issn_print, issn_online, status]
+    validation: client_and_server

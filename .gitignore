@@ -55,3 +55,7 @@ logs/
 # Temporary files
 tmp/
 temp/
+
+# Internal documentation
+docs/
+

@@ -1,0 +1,28 @@
+flow:
+  - step: 1
+    layer: Browser / Next.js Page
+    description: User interacts with UI component
+
+  - step: 2
+    layer: React Component
+    description: Calls Server Action via form action or startTransition
+
+  - step: 3
+    layer: Server Action (actions.ts)
+    description: Validates Zod schema, enforces RBAC, calls Service
+
+  - step: 4
+    layer: Service (service.ts)
+    description: Executes business logic, calls Repository
+
+  - step: 5
+    layer: Repository (repository.ts)
+    description: Performs Supabase database query
+
+  - step: 6
+    layer: PostgreSQL + RLS
+    description: Executes SQL with Row Level Security enforcement
+
+  - step: 7
+    direction: reverse
+    description: Data flows back through Repository → Service → Action → Component

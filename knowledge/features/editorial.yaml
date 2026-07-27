@@ -1,0 +1,6 @@
+feature: editorial
+registry: registry/features.json
+spec: specs/editorial/
+contract: contracts/editorial.contract.yaml
+rules: rules/architecture.yaml
+validators: validators/

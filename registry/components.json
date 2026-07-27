@@ -1,0 +1,16 @@
+{
+  "shared": [
+    "DataTable",
+    "PageHeader",
+    "StatusBadge",
+    "ConfirmDialog",
+    "EmptyState",
+    "ErrorState",
+    "LoadingSkeleton",
+    "Pagination"
+  ],
+  "journal": ["JournalTable", "JournalForm", "JournalStatusBadge", "JournalActions"],
+  "manuscript": ["ManuscriptTable", "ManuscriptForm", "ManuscriptStatusBadge", "ManuscriptActions"],
+  "editorial": ["EditorialDecisionForm", "DecisionHistory"],
+  "publication": ["PublicationTable", "PublicationForm"]
+}

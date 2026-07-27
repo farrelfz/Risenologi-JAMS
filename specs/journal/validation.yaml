@@ -1,0 +1,11 @@
+feature: journal
+
+rules:
+  - field: title
+    rules: [required, min:3, max:500]
+  - field: issn_print
+    rules: [optional, pattern:/^\d{4}-\d{3}[\dX]$/]
+  - field: issn_online
+    rules: [optional, pattern:/^\d{4}-\d{3}[\dX]$/]
+  - field: status
+    rules: [required, enum:active|inactive|suspended]

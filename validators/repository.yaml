@@ -1,0 +1,18 @@
+name: Repository Validator
+checks:
+  - id: NO_BUSINESS_LOGIC
+    description: Repository must not contain business rules or conditional logic beyond DB access.
+    pattern: "No if/else based on business state"
+    result: FAIL_if_found
+  - id: NO_VALIDATION
+    description: Repository must not validate data with Zod or similar.
+    result: FAIL_if_found
+  - id: USES_SUPABASE_CLIENT
+    description: Must use the injected Supabase client, not direct imports.
+    result: FAIL_if_not_found
+  - id: NO_UI_IMPORTS
+    description: Must not import React, JSX or any UI library.
+    result: FAIL_if_found
+  - id: TYPED_RETURN_VALUES
+    description: All methods must have explicit TypeScript return types.
+    result: WARN_if_not_found

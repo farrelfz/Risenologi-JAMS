@@ -1,0 +1,18 @@
+name: Service Validator
+checks:
+  - id: NO_DIRECT_DB
+    description: Service must not import or call Supabase client directly.
+    result: FAIL_if_found
+  - id: USES_REPOSITORY
+    description: Service must only call methods from its injected repository.
+    result: FAIL_if_not_found
+  - id: RBAC_CHECK
+    description: Service must not enforce RBAC (that belongs in actions).
+    note: RBAC is in actions.ts, services are already in trusted context.
+    result: INFO
+  - id: RESULT_PATTERN
+    description: Service methods should return { success, data, error } shaped objects.
+    result: WARN_if_not_found
+  - id: NO_HTTP
+    description: Service must not import Next.js response or request objects.
+    result: FAIL_if_found

@@ -1,0 +1,23 @@
+naming:
+  tables: snake_case_plural
+  columns: snake_case
+  primary_key: id (uuid)
+  foreign_keys: "{table_singular}_id"
+  timestamps: [created_at, updated_at]
+
+defaults:
+  id: gen_random_uuid()
+  created_at: now()
+  updated_at: now()
+
+mandatory_per_table:
+  - id UUID PRIMARY KEY DEFAULT gen_random_uuid()
+  - created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  - updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  - ROW LEVEL SECURITY enabled
+  - internal access policy
+
+forbidden:
+  - anonymous access policies
+  - plain text passwords
+  - storing secrets in rows

@@ -1,0 +1,38 @@
+feature: journal
+version: "1.0"
+
+inputs:
+  create:
+    title: { type: string, required: true, minLength: 3 }
+    issn_print: { type: string, required: false, pattern: "ISSN" }
+    issn_online: { type: string, required: false, pattern: "ISSN" }
+    status: { type: enum, values: [active, inactive], required: true }
+  update:
+    id: { type: uuid, required: true }
+    title: { type: string, required: false }
+    status: { type: enum, values: [active, inactive, suspended], required: false }
+
+outputs:
+  create:
+    journalId: { type: uuid }
+    createdAt: { type: timestamp }
+  update:
+    journalId: { type: uuid }
+    updatedAt: { type: timestamp }
+
+permissions:
+  create: [administrator, journal_manager]
+  read: [administrator, journal_manager, editor]
+  update: [administrator, journal_manager]
+  delete: [administrator]
+
+events:
+  - JournalCreated
+  - JournalUpdated
+  - JournalArchived
+  - JournalDeleted
+
+errors:
+  - JOURNAL_NOT_FOUND
+  - DUPLICATE_ISSN
+  - PERMISSION_DENIED

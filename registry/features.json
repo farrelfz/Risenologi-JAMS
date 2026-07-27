@@ -1,0 +1,42 @@
+{
+  "journal": {
+    "table": "journals",
+    "service": "JournalService",
+    "repository": "JournalRepository",
+    "actions": "actions.ts",
+    "path": "src/features/journal",
+    "roles": ["administrator", "journal_manager", "editor"],
+    "writeRoles": ["administrator", "journal_manager"],
+    "deleteRoles": ["administrator"]
+  },
+  "manuscript": {
+    "table": "manuscripts",
+    "service": "ManuscriptService",
+    "repository": "ManuscriptRepository",
+    "actions": "actions.ts",
+    "path": "src/features/manuscript",
+    "roles": ["administrator", "journal_manager", "editor"],
+    "writeRoles": ["administrator", "journal_manager", "editor"],
+    "deleteRoles": ["administrator", "journal_manager"]
+  },
+  "editorial": {
+    "table": "editorial_decisions",
+    "service": "EditorialService",
+    "repository": "EditorialRepository",
+    "actions": "actions.ts",
+    "path": "src/features/editorial",
+    "roles": ["administrator", "journal_manager", "editor"],
+    "writeRoles": ["administrator", "journal_manager", "editor"],
+    "deleteRoles": ["administrator"]
+  },
+  "publication": {
+    "table": "publications",
+    "service": "PublicationService",
+    "repository": "PublicationRepository",
+    "actions": "actions.ts",
+    "path": "src/features/publication",
+    "roles": ["administrator", "journal_manager"],
+    "writeRoles": ["administrator", "journal_manager"],
+    "deleteRoles": ["administrator"]
+  }
+}

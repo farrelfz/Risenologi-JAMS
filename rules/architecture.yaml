@@ -1,0 +1,27 @@
+name: Architecture Rules
+version: "1.0"
+
+dependency_flow:
+  order:
+    - component → action
+    - action → service
+    - service → repository
+    - repository → database
+  violations:
+    - component → repository (FORBIDDEN)
+    - component → database (FORBIDDEN)
+    - service → database (FORBIDDEN: must use repository)
+
+feature_structure:
+  required_files:
+    - types.ts
+    - schema.ts
+    - repository.ts
+    - service.ts
+    - actions.ts
+    - permissions.ts
+  optional_files:
+    - constants.ts
+    - mapper.ts
+    - errors.ts
+    - hooks.ts

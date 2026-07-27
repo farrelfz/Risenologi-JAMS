@@ -1,0 +1,6 @@
+feature: journal
+registry: registry/features.json
+spec: specs/journal/
+contract: contracts/journal.contract.yaml
+rules: rules/architecture.yaml
+validators: validators/

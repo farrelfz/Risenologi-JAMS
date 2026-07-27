@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "manuscript_lifecycle": {
+    "states": ["draft", "under_review", "revision_required", "accepted", "rejected", "published"],
+    "initial": "draft",
+    "transitions": [
+      {
+        "from": "draft",
+        "to": "under_review",
+        "actor": ["editor", "journal_manager"],
+        "trigger": "submit_for_review"
+      },
+      {
+        "from": "under_review",
+        "to": "revision_required",
+        "actor": ["journal_manager", "editor"],
+        "trigger": "request_revision"
+      },
+      {
+        "from": "under_review",
+        "to": "accepted",
+        "actor": ["journal_manager"],
+        "trigger": "accept"
+      },
+      {
+        "from": "under_review",
+        "to": "rejected",
+        "actor": ["journal_manager"],
+        "trigger": "reject"
+      },
+      {
+        "from": "revision_required",
+        "to": "under_review",
+        "actor": ["editor", "journal_manager"],
+        "trigger": "resubmit"
+      },
+      {
+        "from": "accepted",
+        "to": "published",
+        "actor": ["administrator", "journal_manager"],
+        "trigger": "publish"
+      }
+    ]
+  },
+  "journal_lifecycle": {
+    "states": ["active", "inactive", "suspended"],
+    "initial": "active",
+    "transitions": [
+      {
+        "from": "active",
+        "to": "inactive",
+        "actor": ["administrator", "journal_manager"],
+        "trigger": "archive"
+      },
+      { "from": "inactive", "to": "active", "actor": ["administrator"], "trigger": "reactivate" },
+      { "from": "active", "to": "suspended", "actor": ["administrator"], "trigger": "suspend" }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "system": "Risenologi JAMS",
+  "type": "Internal Editorial Management System",
+  "capabilities": [
+    "journal-management",
+    "manuscript-management",
+    "editorial-workflow",
+    "publication-management",
+    "user-administration"
+  ],
+  "roles": ["administrator", "journal_manager", "editor"],
+  "forbidden_roles": ["author", "reviewer"],
+  "technology": {
+    "frontend": "Next.js 15 App Router + React 19 + Tailwind + shadcn/ui",
+    "backend": "Next.js Server Actions + TypeScript + Zod",
+    "database": "Supabase + PostgreSQL + RLS",
+    "auth": "Supabase Auth with SSR cookies",
+    "hosting": "Vercel"
+  }
+}

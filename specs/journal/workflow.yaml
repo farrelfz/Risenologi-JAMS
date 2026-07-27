@@ -1,0 +1,20 @@
+feature: journal
+
+states:
+  - active
+  - inactive
+  - suspended
+
+transitions:
+  - from: active
+    to: inactive
+    trigger: archive_journal
+    actor: [administrator, journal_manager]
+  - from: inactive
+    to: active
+    trigger: reactivate_journal
+    actor: [administrator]
+  - from: active
+    to: suspended
+    trigger: suspend_journal
+    actor: [administrator]

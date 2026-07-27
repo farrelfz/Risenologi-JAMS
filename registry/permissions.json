@@ -1,0 +1,27 @@
+{
+  "roles": ["administrator", "journal_manager", "editor"],
+  "invalidRoles": ["author", "reviewer"],
+  "permissions": {
+    "administrator": {
+      "journals": ["create", "read", "update", "delete", "archive"],
+      "manuscripts": ["create", "read", "update", "delete"],
+      "editorial_decisions": ["create", "read", "update", "delete"],
+      "publications": ["create", "read", "update", "delete"],
+      "users": ["create", "read", "update", "delete"]
+    },
+    "journal_manager": {
+      "journals": ["create", "read", "update", "archive"],
+      "manuscripts": ["create", "read", "update"],
+      "editorial_decisions": ["create", "read", "update"],
+      "publications": ["create", "read", "update"],
+      "users": ["read"]
+    },
+    "editor": {
+      "journals": ["read"],
+      "manuscripts": ["read", "update"],
+      "editorial_decisions": ["create", "read"],
+      "publications": ["read"],
+      "users": []
+    }
+  }
+}

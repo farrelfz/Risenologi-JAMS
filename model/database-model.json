@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "tables": {
+    "journals": {
+      "columns": ["id", "title", "issn_print", "issn_online", "status", "created_at", "updated_at"],
+      "rls": true,
+      "audit": true
+    },
+    "manuscripts": {
+      "columns": ["id", "journal_id", "title", "abstract", "status", "created_at", "updated_at"],
+      "foreign_keys": { "journal_id": "journals.id" },
+      "rls": true,
+      "audit": true
+    },
+    "editorial_decisions": {
+      "columns": ["id", "manuscript_id", "decision", "notes", "decided_by", "decided_at"],
+      "foreign_keys": { "manuscript_id": "manuscripts.id" },
+      "rls": true,
+      "audit": true
+    },
+    "publications": {
+      "columns": ["id", "manuscript_id", "volume", "issue", "published_date", "doi", "created_at"],
+      "foreign_keys": { "manuscript_id": "manuscripts.id" },
+      "rls": true,
+      "audit": true
+    }
+  }
+}

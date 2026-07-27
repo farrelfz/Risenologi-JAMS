@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "features": {
+    "journal": {
+      "table": "journals",
+      "service": "JournalService",
+      "repository": "JournalRepository",
+      "spec": "specs/journal",
+      "contract": "contracts/journal.contract.yaml"
+    },
+    "manuscript": {
+      "table": "manuscripts",
+      "service": "ManuscriptService",
+      "repository": "ManuscriptRepository",
+      "spec": "specs/manuscript",
+      "contract": "contracts/manuscript.contract.yaml"
+    },
+    "editorial": {
+      "table": "editorial_decisions",
+      "service": "EditorialService",
+      "repository": "EditorialRepository",
+      "spec": "specs/editorial",
+      "contract": "contracts/editorial.contract.yaml"
+    },
+    "publication": {
+      "table": "publications",
+      "service": "PublicationService",
+      "repository": "PublicationRepository",
+      "spec": "specs/publication",
+      "contract": "contracts/publication.contract.yaml"
+    }
+  }
+}

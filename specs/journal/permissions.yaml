@@ -1,0 +1,13 @@
+feature: journal
+
+actions:
+  create:
+    roles: [administrator, journal_manager]
+  read:
+    roles: [administrator, journal_manager, editor]
+  update:
+    roles: [administrator, journal_manager]
+  delete:
+    roles: [administrator]
+  archive:
+    roles: [administrator, journal_manager]

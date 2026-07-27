@@ -1,0 +1,25 @@
+next_steps:
+  - priority: 1
+    id: CODE-001
+    task: Initialize Next.js 15 project structure
+    prompt: docs/10-ai-development/project-bootstrap.md
+    agent: docs/11-ai-prompts/system/backend.md
+
+  - priority: 2
+    id: CODE-002
+    task: Implement Supabase auth with RBAC
+    prompt: docs/10-ai-development/authentication-generator.md
+    agent: docs/11-ai-prompts/system/backend.md
+
+  - priority: 3
+    id: CODE-003
+    task: Generate database migrations
+    prompt: docs/10-ai-development/database-generator.md
+    agent: docs/11-ai-prompts/system/database.md
+
+  - priority: 4
+    id: CODE-004
+    task: Implement journal management feature
+    prompt: docs/11-ai-prompts/workflows/new-feature.md
+    spec: specs/journal/
+    contract: contracts/journal.contract.yaml

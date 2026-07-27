@@ -1,0 +1,28 @@
+name: Frontend Rules
+version: "1.0"
+
+components:
+  allow:
+    - server_actions
+    - react_hooks_for_ui_state
+    - shadcn_ui_components
+    - tailwind_classes
+  deny:
+    - direct_database_access
+    - repository_calls
+    - business_logic
+    - service_calls
+
+ui_requirements:
+  mandatory:
+    - loading_state
+    - empty_state
+    - error_state
+    - skeleton
+    - responsive_design
+    - dark_mode_support
+    - accessibility_aria
+
+forms:
+  validation: zod_with_react_hook_form
+  submission: server_actions_only

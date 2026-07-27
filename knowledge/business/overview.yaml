@@ -1,0 +1,28 @@
+system: Risenologi JAMS
+type: Internal Editorial Management System
+not: OJS, Public Submission Platform, External Portal
+
+purpose: >
+  Enable the Risenologi editorial office to manage journal operations,
+  track manuscript lifecycles, record editorial decisions, and maintain
+  accreditation readiness.
+
+actors:
+  - name: Administrator
+    description: Full system control, user and configuration management
+  - name: Journal Manager
+    description: Manages journal portfolios, manuscripts, and editorial workflows
+  - name: Editor
+    description: Processes assigned manuscripts and records editorial decisions
+
+forbidden_actors:
+  - Author (no accounts — data entered by editorial staff)
+  - Reviewer (no accounts — decisions recorded internally)
+
+capabilities:
+  - journal-management
+  - manuscript-management
+  - editorial-workflow
+  - publication-management
+  - user-administration
+  - reporting-and-analytics
