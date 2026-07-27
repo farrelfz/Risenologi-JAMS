@@ -302,31 +302,31 @@ export default async function DashboardPage() {
                 </div>
 
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Management (49)</span>
+                  <span className="text-muted-foreground">Manajemen (48 Poin)</span>
                   <span className="font-semibold text-foreground">
-                    {totalManagement.toFixed(1)}/49
+                    {totalManagement.toFixed(1)}/48
                   </span>
                 </div>
                 <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-primary to-blue-400 transition-all duration-1000 ease-out"
-                    style={{ width: `${Math.min(100, (totalManagement / 49) * 100)}%` }}
+                    style={{ width: `${Math.min(100, (totalManagement / 48) * 100)}%` }}
                   />
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Substance (51)</span>
+                  <span className="text-muted-foreground">Substansi (52 Poin)</span>
                   <span className="font-semibold text-foreground">
                     {confSubstance < 0.2 ? (
                       <span className="text-muted-foreground text-xs italic">dalam penilaian</span>
                     ) : (
-                      `${totalSubstance.toFixed(1)}/51`
+                      `${totalSubstance.toFixed(1)}/52`
                     )}
                   </span>
                 </div>
                 <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-purple-600 to-purple-400 transition-all duration-1000 ease-out"
-                    style={{ width: `${Math.min(100, (totalSubstance / 51) * 100)}%` }}
+                    style={{ width: `${Math.min(100, (totalSubstance / 52) * 100)}%` }}
                   />
                 </div>
 
