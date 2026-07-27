@@ -11,7 +11,7 @@ if (!supabaseUrl || !supabaseSecretKey) {
 const supabase = createClient(supabaseUrl, supabaseSecretKey);
 
 const editorsData = [
-  // 6 Academic / Senior Editors (Instansi: Universitas Negeri Jakarta) - tanpa NIP
+  // 6 Academic / Senior Editors (Universitas Negeri Jakarta)
   {
     nama: "Taryudi, Ph.D.",
     jabatan: "Editor",
@@ -67,11 +67,11 @@ const editorsData = [
     status_aktif: true,
   },
 
-  // 8 Section Editors
+  // 8 Section Editors (KPM & LPPM Universitas Negeri Jakarta)
   {
     nama: "Irsad Tio Majid, S.Si.",
     jabatan: "Section Editor",
-    afiliasi: "Jurnal Risenologi - KPM UNJ",
+    afiliasi: "Fisika UNJ & Kelompok Peneliti Muda (KPM UNJ)",
     email: "irsad.majid@risenologi.kpmunj.org",
     negara: "ID",
     kualifikasi_internasional: false,
@@ -80,7 +80,7 @@ const editorsData = [
   {
     nama: "Ahmad Rizky Farhan, S.Hum.",
     jabatan: "Section Editor",
-    afiliasi: "Jurnal Risenologi - KPM UNJ",
+    afiliasi: "Bimbingan & Konseling UNJ & KPM UNJ",
     email: "ahmad.farhan@risenologi.kpmunj.org",
     negara: "ID",
     kualifikasi_internasional: false,
@@ -89,7 +89,7 @@ const editorsData = [
   {
     nama: "Chika Shafa Maura, S.Si.",
     jabatan: "Section Editor",
-    afiliasi: "Jurnal Risenologi - KPM UNJ",
+    afiliasi: "Kimia UNJ & KPM UNJ",
     email: "chika.maura@risenologi.kpmunj.org",
     negara: "ID",
     kualifikasi_internasional: false,
@@ -98,7 +98,7 @@ const editorsData = [
   {
     nama: "Helga Gustian, S.Pd.",
     jabatan: "Section Editor",
-    afiliasi: "Jurnal Risenologi - KPM UNJ",
+    afiliasi: "Pendidikan Matematika UNJ & KPM UNJ",
     email: "helga.gustian@risenologi.kpmunj.org",
     negara: "ID",
     kualifikasi_internasional: false,
@@ -107,7 +107,7 @@ const editorsData = [
   {
     nama: "Iif Ahmad Rifa'i, S.Pd.",
     jabatan: "Section Editor",
-    afiliasi: "Jurnal Risenologi - KPM UNJ",
+    afiliasi: "Pendidikan UNJ & KPM UNJ",
     email: "iif.rifai@risenologi.kpmunj.org",
     negara: "ID",
     kualifikasi_internasional: false,
@@ -116,7 +116,7 @@ const editorsData = [
   {
     nama: "Milayda Samsu, S.Si.",
     jabatan: "Section Editor",
-    afiliasi: "Jurnal Risenologi - KPM UNJ",
+    afiliasi: "Sains UNJ & KPM UNJ",
     email: "milayda.samsu@risenologi.kpmunj.org",
     negara: "ID",
     kualifikasi_internasional: false,
@@ -125,7 +125,7 @@ const editorsData = [
   {
     nama: "Muhammad Abdurrahman Ihsan, S.Pd.",
     jabatan: "Section Editor",
-    afiliasi: "Jurnal Risenologi - KPM UNJ",
+    afiliasi: "Pendidikan Teknik Mesin UNJ & KPM UNJ",
     email: "abdurrahman.ihsan@risenologi.kpmunj.org",
     negara: "ID",
     kualifikasi_internasional: false,
@@ -134,7 +134,7 @@ const editorsData = [
   {
     nama: "Putri Rachman Fastya, S.Pd.",
     jabatan: "Section Editor",
-    afiliasi: "Jurnal Risenologi - KPM UNJ",
+    afiliasi: "Pendidikan Fisika UNJ & KPM UNJ",
     email: "putri.fastya@risenologi.kpmunj.org",
     negara: "ID",
     kualifikasi_internasional: false,
@@ -143,7 +143,7 @@ const editorsData = [
 ];
 
 async function runSeed() {
-  console.log("🚀 Starting Clean Editor Registry Update (No NIP)...\n");
+  console.log("🚀 Starting Editor Registry Update with UNJ & KPM UNJ Affiliations...\n");
 
   const { data: journal } = await supabase.from("journals").select("id").limit(1).single();
   const journalId = journal?.id;
@@ -153,7 +153,7 @@ async function runSeed() {
     process.exit(1);
   }
 
-  // Delete existing records to clean up NIP entries
+  // Delete existing records to replace with updated affiliations
   await supabase.from("editorial_board_members").delete().neq("id", "00000000-0000-0000-0000-000000000000");
 
   let countMembers = 0;
@@ -177,8 +177,8 @@ async function runSeed() {
     }
   }
 
-  console.log(`✅ Successfully updated ${countMembers} clean editor entries (without NIP)!`);
-  console.log(`🎉 Editor Registry Cleaned & Updated!`);
+  console.log(`✅ Successfully updated ${countMembers} editor entries with detailed UNJ affiliations!`);
+  console.log(`🎉 Editor Registry Fully Up to Date!`);
 }
 
 runSeed();
