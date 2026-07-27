@@ -34,7 +34,7 @@ async function getData() {
     { data: articles },
   ] = await Promise.all([
     supabase.from("reviewers").select("nama, negara, kualifikasi_internasional, afiliasi"),
-    supabase.from("editorial_board").select("nama, negara, jabatan, afiliasi"),
+    supabase.from("editorial_board_members").select("nama, negara, jabatan, afiliasi"),
     supabase.from("article_authors").select("nama, afiliasi, negara"),
     supabase.from("articles").select("id, judul, status"),
   ]);

@@ -106,7 +106,7 @@ export async function runFullJournalAudit(): Promise<AuditAnalysisResult> {
   ] = await Promise.all([
     supabase.from("journals").select("*").limit(1).single(),
     supabase.from("reviewers").select("*"),
-    supabase.from("editorial_board").select("*"),
+    supabase.from("editorial_board_members").select("*"),
     supabase.from("articles").select("id, judul, doi, abstrak, status, metadata_lengkap"),
     supabase.from("editions").select("*"),
   ]);

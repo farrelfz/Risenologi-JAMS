@@ -24,7 +24,7 @@ async function getIndicatorData() {
   ] = await Promise.all([
     supabase.from("journals").select("*").limit(1).single(),
     supabase.from("reviewers").select("*"),
-    supabase.from("editorial_board").select("*"),
+    supabase.from("editorial_board_members").select("*"),
     supabase.from("editions").select("*"),
     supabase.from("articles").select("id, judul, doi, status, abstrak"),
     supabase.from("article_authors").select("id, nama, negara, afiliasi"),
