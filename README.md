@@ -24,7 +24,7 @@
 
 **Risenologi JAMS (Journal Accreditation & Management System)** adalah platform intelijen tata kelola jurnal ilmiah tingkat enterprise yang dirancang khusus untuk memandu tim editorial **Jurnal Risenologi (KPM UNJ)** mencapai standar akreditasi Sinta/Arjuna tertinggi.
 
-Platform ini menggabungkan estimasi skor akreditasi real-time, audit kesiapan naskah, manajemen mitra bestari (reviewer), simulasi kelulusan Sinta, serta **Internal Communication System** yang terintegrasi 2-arah dengan Google Spreadsheet dan Gmail SMTP resmi (`risenologikpm@unj.ac.id`).
+Platform ini menggabungkan estimasi skor akreditasi real-time, audit kesiapan naskah, manajemen mitra bestari (reviewer), simulasi kelulusan Sinta, serta **Internal Communication System** yang terintegrasi 2-arah dengan Google Spreadsheet dan Gmail SMTP resmi.
 
 ---
 
@@ -48,7 +48,7 @@ Platform ini menggabungkan estimasi skor akreditasi real-time, audit kesiapan na
 ### ✉️ 4. Internal Communication System & Otomatisasi
 - **Master Template Komunikasi**: Manajemen template korespondensi editorial dengan variabel dinamis (`{{author_name}}`, `{{article_title}}`, dsb.).
 - **Searchable Contact Selector**: Fitur pencarian kata kunci instan untuk memilih penerima pesan (Section Editor, Journal Manager, Author, Reviewer) dilengkapi dengan *role badges*.
-- **Pesan Email SMTP Resmi**: Pengiriman email fisik otomatis via Nodemailer Gmail SMTP dari alamat resmi `risenologikpm@unj.ac.id`.
+- **Pesan Email SMTP Resmi**: Pengiriman email fisik otomatis via Nodemailer Gmail SMTP.
 - **Audit Trail & Logging**: Pencatatan riwayat transaksi komunikasi terpusat pada tabel `communication_action` dan `audit_logs`.
 
 ---
@@ -61,20 +61,20 @@ Platform ini menggabungkan estimasi skor akreditasi real-time, audit kesiapan na
 | **Bahasa Pemrograman** | [TypeScript (Strict Mode)](https://www.typescriptlang.org/) |
 | **Styling & UI** | [TailwindCSS v4](https://tailwindcss.com/), Lucide Icons, Glassmorphism UI |
 | **Database & Authentication** | [Supabase Postgres](https://supabase.com/) & Supabase Auth (Row Level Security Enabled) |
-| **Email Dispatch Engine** | [Nodemailer](https://nodemailer.com/) dengan Gmail SMTP (`risenologikpm@unj.ac.id`) |
-| **Otomasisasi Spreadsheet** | Google Apps Script (Web App Endpoint, 2-Way Sync API) |
+| **Email Dispatch Engine** | [Nodemailer](https://nodemailer.com/) dengan Gmail SMTP |
+| **Otomatisasi Spreadsheet** | Google Apps Script (Web App Endpoint, 2-Way Sync API) |
 | **Deployment & Hosting** | [Vercel Cloud Platform](https://vercel.com/) |
 
 ---
 
 ## 🌐 Integrasi Google Spreadsheet
 
-Risenologi JAMS terhubung secara **2-Arah (Two-Way Live Sync)** dengan [Google Spreadsheet Editorial Workflow](https://docs.google.com/spreadsheets/d/1_r44jmvzyKOb8fTvnwJ79OHm1esXUb5OaIzStqEtr1I/edit?usp=sharing).
+Risenologi JAMS terhubung secara **2-Arah (Two-Way Live Sync)** dengan Google Spreadsheet Editorial Workflow.
 
 ### Fitur Integrasi:
 1. **Pemicu Sinkronisasi 1-Klik**: Tombol *Sync Ke Spreadsheet* pada halaman [Timeline Editorial](/app/timeline) untuk memperbarui data naskah dan linimasa.
 2. **Endpoint API Webhook**: Route `/api/spreadsheet/sync` yang dapat dipanggil oleh Google Apps Script.
-3. **Cron Pengingat Otomatis Harian**: Skrip Google Apps Script yang menjalankan pengiriman email pengingat harian dari `risenologikpm@unj.ac.id` setiap pukul 08:00 WIB.
+3. **Cron Pengingat Otomatis Harian**: Skrip Google Apps Script yang menjalankan pengiriman email pengingat harian secara otomatis.
 
 ---
 
@@ -103,27 +103,27 @@ cd Risenologi-JAMS
 ```
 
 ### 3. Konfigurasi Variabel Lingkungan (`.env`)
-Buat berkas `.env` pada direktori utama projek dan isi dengan konfigurasi berikut:
+Buat berkas `.env` pada direktori utama projek dan isi dengan contoh pola konfigurasi berikut:
 
 ```env
 # SUPABASE CONFIGURATION
-SUPABASE_URL=https://xckdnwlqdvxeknsgiaoz.supabase.co
+SUPABASE_URL=https://your-supabase-project.supabase.co
 SUPABASE_SECRET_KEY=your_supabase_secret_key
 
-NEXT_PUBLIC_SUPABASE_URL=https://xckdnwlqdvxeknsgiaoz.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_SYvc5qEon8jaPkZ7a9MiFw_Li1d0V1L
+NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 # GOOGLE SHEETS WEBHOOK ENDPOINT
-NEXT_PUBLIC_GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/AKfycbyi8ldXZ4QKecpwwSzFc3F8aEL7xpQdtoihS-pNgoMF_pOSkA-PSIOQYI10y_5JtKJUDw/exec
+NEXT_PUBLIC_GOOGLE_SHEETS_WEBHOOK_URL=https://script.google.com/macros/s/your-google-script-id/exec
 
-# OFFICIAL RISENOLOGI SMTP CONFIGURATION (GMAIL)
+# OFFICIAL SMTP CONFIGURATION (GMAIL)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=465
 SMTP_SECURE=true
-SMTP_USER=risenologikpm@unj.ac.id
+SMTP_USER=your_official_email@domain.com
 SMTP_PASS=your_gmail_app_password
-SMTP_FROM_NAME="JAMS Risenologi Editorial Team"
-SMTP_FROM_EMAIL=risenologikpm@unj.ac.id
+SMTP_FROM_NAME="JAMS Editorial Team"
+SMTP_FROM_EMAIL=your_official_email@domain.com
 ```
 
 ### 4. Instalasi Dependensi
