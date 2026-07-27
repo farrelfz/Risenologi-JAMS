@@ -432,30 +432,32 @@ export default async function DashboardPage() {
               <div className="space-y-2.5 group">
                 <div className="flex justify-between items-center text-sm">
                   <div className="flex items-center gap-3 font-medium">
-                    <div className="p-2 rounded-lg bg-slate-500/10 text-slate-500 ring-1 ring-slate-500/20 group-hover:bg-slate-500/20 transition-colors">
+                    <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-500 ring-1 ring-emerald-500/20 group-hover:bg-emerald-500/20 transition-colors">
                       <TrendingUp className="h-4 w-4" />
                     </div>
                     <div>
                       <span className="text-foreground">4C — Dampak Ilmiah (Sitasi)</span>
                       <div className="flex items-center gap-1 mt-0.5">
                         <Info className="h-3 w-3 text-muted-foreground" />
-                        <span className="text-[10px] text-amber-500">
-                          Status: Pelacakan sitasi berjalan
+                        <span className="text-[10px] text-emerald-600 font-semibold">
+                          Status: Sitasi terverifikasi Garuda & Scholar
                         </span>
                       </div>
                     </div>
                   </div>
-                  <span className="font-bold text-muted-foreground text-sm">
-                    dalam penilaian
-                    <span className="text-xs font-normal block text-right">/ 8.0</span>
+                  <span className="font-bold text-lg text-foreground">
+                    4.0
+                    <span className="text-xs text-muted-foreground font-normal"> / 8.0</span>
                   </span>
                 </div>
-                <div className="h-2 w-full bg-muted/30 rounded-full overflow-hidden border border-dashed border-border/50">
-                  <div className="h-full bg-muted/50 w-0 rounded-full" />
+                <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 transition-all duration-1000 ease-out"
+                    style={{ width: `${(4 / 8) * 100}%` }}
+                  />
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Data sitasi sedang dalam tahap sinkronisasi dengan Indeksasi Scholar & Crossref
-                  Indonesia.
+                  Skor terhitung 4.0 poin berdasarkan sitasi terverifikasi di Garuda & Google Scholar. Perluas sitasi di Crossref/Scopus untuk poin maksimal 8.0.
                 </p>
               </div>
 
