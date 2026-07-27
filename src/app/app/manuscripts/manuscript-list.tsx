@@ -31,6 +31,9 @@ interface ArticleItem {
   noWhatsappPenulis?: string;
   status: string;
   skor: number | null;
+  skorNovelty?: number;
+  skorAnalisis?: number;
+  skorSimpulan?: number;
   editionStr: string;
   volume?: number;
   nomor?: number;
@@ -41,6 +44,7 @@ interface ArticleItem {
   chkNovelty: boolean;
   chkRef: boolean;
   chkAnalisis: boolean;
+  chkMendeley?: boolean;
 }
 
 interface ManuscriptListProps {
@@ -362,6 +366,79 @@ export function ManuscriptList({ initialArticles }: ManuscriptListProps) {
                       <option value="terbit">Terbit (Published)</option>
                       <option value="draft">Draft (Persiapan)</option>
                     </select>
+                  </div>
+
+                  {/* Evaluasi Substansi Artikel (Input Editor / Asesor) */}
+                  <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30 space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">
+                        🧪 Evaluasi Substansi Artikel (134/E/KPT/2021)
+                      </span>
+                      <span className="text-[10px] text-muted-foreground">Input Editor</span>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-3">
+                      <div className="space-y-1">
+                        <label className="text-xs font-semibold text-foreground">
+                          Kepioniran / Novelty (Max 6.0)
+                        </label>
+                        <Input
+                          name="skorNovelty"
+                          type="number"
+                          step="0.5"
+                          min="0"
+                          max="6"
+                          defaultValue={selectedArticle.skorNovelty ?? 4.5}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-xs font-semibold text-foreground">
+                          Analisis & Sintesis (Max 5.0)
+                        </label>
+                        <Input
+                          name="skorAnalisis"
+                          type="number"
+                          step="0.5"
+                          min="0"
+                          max="5"
+                          defaultValue={selectedArticle.skorAnalisis ?? 3.5}
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-xs font-semibold text-foreground">
+                          Kesimpulan (Max 3.0)
+                        </label>
+                        <Input
+                          name="skorSimpulan"
+                          type="number"
+                          step="0.5"
+                          min="0"
+                          max="3"
+                          defaultValue={selectedArticle.skorSimpulan ?? 2.5}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          name="chkRefPrimer"
+                          defaultChecked={selectedArticle.chkRef}
+                          className="rounded border-input text-primary"
+                        />
+                        <span>Pustaka Primer &gt;80% (Jurnal Ilmiah)</span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          name="chkMendeley"
+                          defaultChecked={selectedArticle.chkMendeley ?? true}
+                          className="rounded border-input text-primary"
+                        />
+                        <span>Reference Manager (Mendeley/Zotero)</span>
+                      </label>
+                    </div>
                   </div>
 
                   <div className="space-y-2">
