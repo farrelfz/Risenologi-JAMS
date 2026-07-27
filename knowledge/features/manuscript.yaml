@@ -1,6 +1,0 @@
-feature: manuscript
-registry: registry/features.json
-spec: specs/manuscript/
-contract: contracts/manuscript.contract.yaml
-rules: rules/architecture.yaml
-validators: validators/
