@@ -24,7 +24,7 @@
 
 **Risenologi JAMS (Journal Accreditation & Management System)** adalah platform intelijen tata kelola jurnal ilmiah tingkat enterprise yang dirancang khusus untuk memandu tim editorial **Jurnal Risenologi (KPM UNJ)** mencapai standar akreditasi Sinta/Arjuna tertinggi.
 
-Platform ini menggabungkan estimasi skor akreditasi real-time, audit kesiapan naskah, manajemen mitra bestari (reviewer), simulasi kelulusan Sinta, serta **Internal Communication System (M18)** yang terintegrasi 2-arah dengan Google Spreadsheet dan Gmail SMTP resmi (`risenologikpm@unj.ac.id`).
+Platform ini menggabungkan estimasi skor akreditasi real-time, audit kesiapan naskah, manajemen mitra bestari (reviewer), simulasi kelulusan Sinta, serta **Internal Communication System** yang terintegrasi 2-arah dengan Google Spreadsheet dan Gmail SMTP resmi (`risenologikpm@unj.ac.id`).
 
 ---
 
@@ -32,20 +32,20 @@ Platform ini menggabungkan estimasi skor akreditasi real-time, audit kesiapan na
 
 ### 📊 1. Fondasi & Mutu Tata Kelola
 - **Dashboard Mutu**: Visualisasi real-time skor kesiapan akreditasi, statistik terbitan, dan indikator mutu Arjuna.
-- **Desk Evaluation (M1–M4)**: Evaluasi mandiri otomatis berdasarkan 8 kriteria akreditasi Arjuna Sinta.
-- **Tata Kelola Jurnal (M5–M8)**: Manajemen profil jurnal, legalitas e-ISSN, integrasi Crossref DOI, dan kebijakan editorial.
+- **Desk Evaluation**: Evaluasi mandiri otomatis berdasarkan 8 kriteria akreditasi Arjuna Sinta.
+- **Tata Kelola Jurnal**: Manajemen profil jurnal, legalitas e-ISSN, integrasi Crossref DOI, dan kebijakan editorial.
 - **Referensi Rubrik**: Panduan rinci indikator penilaian, bobot skor, dan pedoman akreditasi resmi Kemdiktisaintek.
 
 ### 📄 2. Manajemen Naskah & Reviewer
-- **Kesiapan Naskah (M9)**: Tracking kesiapan akreditasi per naskah, validasi kontak (Email & WhatsApp), dan integrasi pemicu komunikasi M18.
-- **Registry Reviewer (M10–M11)**: Database mitra bestari (reviewer), kualifikasi keilmuan, serta rekam jejak durasi penugasan review.
+- **Kesiapan Naskah**: Tracking kesiapan akreditasi per naskah, validasi kontak (Email & WhatsApp), dan integrasi pemicu komunikasi.
+- **Registry Reviewer**: Database mitra bestari (reviewer), kualifikasi keilmuan, serta rekam jejak durasi penugasan review.
 
 ### 🧠 3. Intelijen & Perencanaan
-- **Intelijen Akreditasi (M12–M15)**: Deteksi risiko editorial berbasis aturan cerdas dan estimasi peluang kelulusan Sinta.
-- **Simulator Akreditasi (M16)**: Simulator interaktif untuk menguji dampak peningkatan indikator terhadap kenaikan peringkat Sinta.
-- **Timeline Editorial (M7/M8)**: Linimasa editorial 9-Fase yang terhubung secara otomatis dengan Google Spreadsheet Workflow.
+- **Intelijen Akreditasi**: Deteksi risiko editorial berbasis aturan cerdas dan estimasi peluang kelulusan Sinta.
+- **Simulator Akreditasi**: Simulator interaktif untuk menguji dampak peningkatan indikator terhadap kenaikan peringkat Sinta.
+- **Timeline Editorial**: Linimasa editorial 9-Fase yang terhubung secara otomatis dengan Google Spreadsheet Workflow.
 
-### ✉️ 4. Internal Communication System (M18) & Otomatisasi
+### ✉️ 4. Internal Communication System & Otomatisasi
 - **Master Template Komunikasi**: Manajemen template korespondensi editorial dengan variabel dinamis (`{{author_name}}`, `{{article_title}}`, dsb.).
 - **Searchable Contact Selector**: Fitur pencarian kata kunci instan untuk memilih penerima pesan (Section Editor, Journal Manager, Author, Reviewer) dilengkapi dengan *role badges*.
 - **Pesan Email SMTP Resmi**: Pengiriman email fisik otomatis via Nodemailer Gmail SMTP dari alamat resmi `risenologikpm@unj.ac.id`.

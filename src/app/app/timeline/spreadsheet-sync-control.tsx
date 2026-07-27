@@ -114,7 +114,7 @@ export function SpreadsheetSyncControl({ webhookUrl }: SpreadsheetSyncControlPro
               </>
             ) : (
               <>
-                <Zap className="mr-1.5 h-3.5 w-3.5" /> Jembatan Email M18
+                <Zap className="mr-1.5 h-3.5 w-3.5" /> Kirim Pengingat Editorial
               </>
             )}
           </Button>

@@ -302,7 +302,7 @@ export default async function TimelinePage() {
             <RefreshCw className="h-5 w-5 text-primary" /> Panduan Integrasi Google Apps Script (Otomasisasi Spreadsheet)
           </CardTitle>
           <CardDescription>
-            Pasang skrip otomatis berikut di Google Spreadsheet Anda untuk sinkronisasi 2-arah dan pengiriman pengingat otomatis via M18.
+            Pasang skrip otomatis berikut di Google Spreadsheet Anda untuk sinkronisasi 2-arah dan pengiriman pengingat otomatis.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -316,7 +316,7 @@ export default async function TimelinePage() {
   const ui = SpreadsheetApp.getUi();
   ui.createMenu('🚀 Risenologi JAMS')
     .addItem('Sync Schedule ke JAMS', 'syncScheduleToJAMS')
-    .addItem('Kirim Reminder Otomatis (M18)', 'triggerM18Reminders')
+    .addItem('Kirim Reminder Editorial Otomatis', 'triggerEditorialReminders')
     .addToUi();
 }
 
@@ -326,15 +326,15 @@ function syncScheduleToJAMS() {
   SpreadsheetApp.getUi().alert('✅ Jadwal Spreadsheet berhasil disinkronkan ke Risenologi JAMS Database!');
 }
 
-function triggerM18Reminders() {
-  // Memanggil endpoint M18 Communication System di Risenologi JAMS
+function triggerEditorialReminders() {
+  // Memanggil endpoint Sistem Komunikasi Editorial di Risenologi JAMS
   const response = UrlFetchApp.fetch('https://xckdnwlqdvxeknsgiaoz.supabase.co/rest/v1/communication_action', {
     method: 'get',
     headers: {
       'apikey': 'YOUR_SUPABASE_KEY'
     }
   });
-  SpreadsheetApp.getUi().alert('📬 Notifikasi pengingat tenggat berhasil diproses oleh M18!');
+  SpreadsheetApp.getUi().alert('📬 Notifikasi pengingat tenggat berhasil diproses oleh Sistem JAMS!');
 }`}
             </pre>
           </div>
