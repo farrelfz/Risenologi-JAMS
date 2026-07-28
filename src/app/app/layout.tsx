@@ -23,13 +23,30 @@ export default async function AppLayout({
 
   const { data: journal } = await supabase
     .from("journals")
-    .select("status_sinta, target_sinta")
+    .select("id, status_sinta, target_sinta")
     .limit(1)
     .single();
 
+  let currentTotalScore = 68.5;
+  if (journal?.id) {
+    const { data: scores } = await supabase
+      .from("score_estimates")
+      .select("skor")
+      .eq("entitas_id", journal.id);
+    if (scores && scores.length > 0) {
+      currentTotalScore = Number(
+        scores.reduce((acc: number, s: any) => acc + Number(s.skor || 0), 0).toFixed(1),
+      );
+    }
+  }
+
   return (
     <div suppressHydrationWarning className="flex min-h-screen bg-transparent">
-      <Sidebar profile={profile} targetSinta={journal?.target_sinta} />
+      <Sidebar
+        profile={profile}
+        targetSinta={journal?.target_sinta}
+        currentScore={currentTotalScore}
+      />
       <div suppressHydrationWarning className="flex-1 flex flex-col min-w-0">
         <Header profile={profile} statusSinta={journal?.status_sinta} />
         <main suppressHydrationWarning className="flex-1 overflow-auto p-6 md:p-8">

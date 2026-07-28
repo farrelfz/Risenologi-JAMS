@@ -17,11 +17,13 @@ import {
   Loader2,
   Pencil,
   Mail,
+  Award,
 } from "lucide-react";
 import { deleteManuscript, updateManuscript } from "@/features/articles/actions";
 import { toast } from "sonner";
 import { SendCommunicationDialog } from "@/features/communication/components/send-communication-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArticleAuditModal } from "./article-audit-modal";
 
 interface ArticleItem {
   id: string;
@@ -55,6 +57,7 @@ export function ManuscriptList({ initialArticles }: ManuscriptListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedArticle, setSelectedArticle] = useState<ArticleItem | null>(null);
+  const [auditingArticle, setAuditingArticle] = useState<ArticleItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -216,13 +219,24 @@ export function ManuscriptList({ initialArticles }: ManuscriptListProps) {
                     >
                       {m.status}
                     </span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-7 text-xs text-primary group-hover:bg-primary/10"
-                    >
-                      <Eye className="mr-1 h-3.5 w-3.5" /> Detail
-                    </Button>
+                    <div className="flex gap-1.5">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setAuditingArticle(m)}
+                        className="h-7 text-xs border-amber-500/30 bg-amber-500/10 text-amber-700 hover:bg-amber-500/20 font-medium gap-1"
+                      >
+                        <Award className="h-3.5 w-3.5" /> Audit Mutu ARJUNA
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setSelectedArticle(m)}
+                        className="h-7 text-xs text-primary group-hover:bg-primary/10"
+                      >
+                        <Eye className="mr-1 h-3.5 w-3.5" /> Detail
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardHeader>
@@ -614,6 +628,13 @@ export function ManuscriptList({ initialArticles }: ManuscriptListProps) {
           onClose={() => setIsCommOpen(false)}
           articleId={selectedArticle.id}
           articleTitle={selectedArticle.judul}
+        />
+      )}
+
+      {auditingArticle && (
+        <ArticleAuditModal
+          article={auditingArticle}
+          onClose={() => setAuditingArticle(null)}
         />
       )}
     </div>

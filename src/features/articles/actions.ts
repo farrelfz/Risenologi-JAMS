@@ -247,3 +247,75 @@ export async function updateManuscript(id: string, formData: FormData) {
   revalidatePath("/app/dashboard");
   return { success: true };
 }
+
+export interface ArticleEvaluationScores {
+  [itemCode: string]: number;
+}
+
+export async function saveArticleSubstanceEvaluation(
+  articleId: string,
+  scores: ArticleEvaluationScores,
+  catatan?: string,
+) {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SECRET_KEY!,
+  );
+
+  const entries = Object.entries(scores);
+  for (const [code, score] of entries) {
+    const { data: existing } = await supabase
+      .from("score_estimates")
+      .select("id")
+      .eq("entitas_id", articleId)
+      .eq("indikator_kode", code)
+      .maybeSingle();
+
+    if (existing) {
+      await supabase
+        .from("score_estimates")
+        .update({
+          skor: score,
+          sumber: "verifikasi_manusia",
+          catatan: catatan || null,
+          tanggal_hitung: new Date().toISOString(),
+        })
+        .eq("id", existing.id);
+    } else {
+      await supabase.from("score_estimates").insert({
+        entitas_id: articleId,
+        indikator_kode: code,
+        indikator_nama: `Evaluasi Mutu Naskah ${code}`,
+        skor: score,
+        skor_maks: 5.0,
+        sumber: "verifikasi_manusia",
+        catatan: catatan || null,
+        tanggal_hitung: new Date().toISOString(),
+      });
+    }
+  }
+
+  revalidatePath("/app/manuscripts");
+  revalidatePath("/app/indicators");
+  return { success: true, message: "Evaluasi mutu naskah berhasil disimpan." };
+}
+
+export async function getArticleSubstanceEvaluations(articleId: string) {
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SECRET_KEY!,
+  );
+
+  const { data } = await supabase
+    .from("score_estimates")
+    .select("indikator_kode, skor, catatan")
+    .eq("entitas_id", articleId);
+
+  const result: { [key: string]: number } = {};
+  if (data) {
+    data.forEach((row: any) => {
+      result[row.indikator_kode] = Number(row.skor);
+    });
+  }
+  return result;
+}

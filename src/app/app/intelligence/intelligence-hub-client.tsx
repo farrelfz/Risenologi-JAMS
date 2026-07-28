@@ -36,6 +36,7 @@ import {
   AuditAnalysisResult,
   IndicatorEvidence,
 } from "@/features/auditor/actions";
+import { generateGroqAiActionPlan } from "@/features/intelligence/actions";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -64,6 +65,27 @@ export function IntelligenceHubClient({
   >("auditor");
   const [audit, setAudit] = useState<AuditAnalysisResult>(initialAudit);
   const [isScanning, setIsScanning] = useState(false);
+
+  // Groq AI State
+  const [groqPlan, setGroqPlan] = useState<string | null>(null);
+  const [isGroqLoading, setIsGroqLoading] = useState(false);
+
+  const handleGenerateGroqPlan = async () => {
+    setIsGroqLoading(true);
+    try {
+      const res = await generateGroqAiActionPlan();
+      if (res.success && res.actionPlan) {
+        setGroqPlan(res.actionPlan);
+        toast.success("Groq AI Action Plan berhasil dibuat super cepat!");
+      } else {
+        toast.error(res.error || "Gagal membuat Groq AI Action Plan.");
+      }
+    } catch (e: any) {
+      toast.error("Terjadi kesalahan sistem saat mengontak Groq AI Engine.");
+    } finally {
+      setIsGroqLoading(false);
+    }
+  };
 
   // Auditor tab states
   const [searchQuery, setSearchQuery] = useState("");
@@ -342,15 +364,59 @@ export function IntelligenceHubClient({
             </p>
           </div>
         </div>
-        <Button onClick={handleRunScan} disabled={isScanning} size="sm" className="shadow-sm">
-          {isScanning ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <RefreshCw className="mr-2 h-4 w-4" />
-          )}
-          Scan Audit Real-Time
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleGenerateGroqPlan}
+            disabled={isGroqLoading}
+            size="sm"
+            className="bg-purple-600 hover:bg-purple-700 text-white font-medium shadow-sm gap-1.5"
+          >
+            {isGroqLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Zap className="h-4 w-4 text-amber-300 fill-amber-300" />
+            )}
+            {isGroqLoading ? "Mengontak Groq..." : "Generate AI Action Plan (Groq)"}
+          </Button>
+          <Button onClick={handleRunScan} disabled={isScanning} size="sm" variant="outline" className="shadow-sm">
+            {isScanning ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <RefreshCw className="mr-2 h-4 w-4" />
+            )}
+            Scan Audit Real-Time
+          </Button>
+        </div>
       </div>
+
+      {/* Groq AI Action Plan Widget */}
+      {groqPlan && (
+        <Card className="glass-card border-purple-500/30 bg-gradient-to-r from-purple-500/10 via-indigo-500/5 to-purple-500/10">
+          <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-purple-500/20 text-purple-600">
+                <Zap className="h-4 w-4 fill-purple-600" />
+              </div>
+              <div>
+                <CardTitle className="text-base font-bold text-foreground">
+                  Groq AI Action Plan — Roadmap to Sinta 1
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Analisis rekomendasi berbasis Groq LLaMA-3.3 Cloud Engine (Respon &lt;1 Detik)
+                </CardDescription>
+              </div>
+            </div>
+            <Button variant="ghost" size="sm" onClick={() => setGroqPlan(null)} className="h-7 text-xs text-muted-foreground">
+              Tutup
+            </Button>
+          </CardHeader>
+          <CardContent className="p-4 pt-2">
+            <div className="whitespace-pre-wrap text-xs text-foreground leading-relaxed bg-background/60 p-4 rounded-xl border border-purple-500/20 font-mono">
+              {groqPlan}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Main Tab Navigation */}
       <div className="flex items-center gap-1.5 bg-muted/30 p-1.5 rounded-2xl border border-border/40 overflow-x-auto">

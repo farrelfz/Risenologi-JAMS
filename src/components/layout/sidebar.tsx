@@ -22,6 +22,7 @@ import type { UserProfile } from "@/features/accreditation/types";
 interface SidebarProps {
   profile: Pick<UserProfile, "role">;
   targetSinta?: string | null;
+  currentScore?: number;
 }
 
 const sintaTargetMap: Record<string, { label: string; minScore: number }> = {
@@ -57,7 +58,7 @@ const NAVIGATION = [
       },
       {
         name: "Referensi Rubrik",
-        href: "/app/rubric-reference",
+        href: "/app/indicators",
         icon: BookOpen,
         roles: ["administrator", "journal_manager", "editor"],
       },
@@ -128,14 +129,14 @@ const NAVIGATION = [
   },
 ];
 
-export function Sidebar({ profile, targetSinta }: SidebarProps) {
+export function Sidebar({ profile, targetSinta, currentScore }: SidebarProps) {
   const pathname = usePathname();
 
   const targetKey = targetSinta || "sinta_2";
   const targetInfo = sintaTargetMap[targetKey] || { label: "Sinta 2", minScore: 70.0 };
-  const currentScore = 58.5;
-  const pct = Math.min(100, Math.round((currentScore / targetInfo.minScore) * 100));
-  const gap = Number(Math.max(0, targetInfo.minScore - currentScore).toFixed(1));
+  const scoreVal = currentScore !== undefined ? currentScore : 68.5;
+  const pct = Math.min(100, Math.round((scoreVal / targetInfo.minScore) * 100));
+  const gap = Number(Math.max(0, targetInfo.minScore - scoreVal).toFixed(1));
 
   return (
     <div

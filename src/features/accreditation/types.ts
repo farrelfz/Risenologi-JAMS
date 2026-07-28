@@ -11,17 +11,27 @@
 export type IndicatorCode =
   // Tata Kelola
   | "1" // Penamaan Jurnal (max 2)
-  | "2" // Kelembagaan Penerbit (max 5)
+  | "1.1" // Spesifisitas Penamaan (max 2)
+  | "2" // Kelembagaan Penerbit (max 4/5)
+  | "2.1" // Kelembagaan Penerbit & Kerjasama OPI (max 4)
   | "3A" // Mitra Bestari (max 6)
   | "3B" // Dewan Penyunting (max 5)
   | "3C" // Mutu Penyuntingan Substantif (max 3)
   | "3D" // Petunjuk Penulis (max 1)
   | "3E" // Mutu Gaya & Format (max 2)
-  | "3F" // Manajemen Jurnal (max 2)
+  | "3F" // Manajemen Jurnal (max 7)
   // Substansi
   | "4A" // Cakupan Keilmuan (max 4)
   | "4B" // Aspirasi Wawasan / negara penulis (max 8)
   | "4C" // Dampak Ilmiah / sitasi (max 8)
+  | "4.4" // Mutu Judul Artikel (max 1)
+  | "4.5" // Mutu Abstrak & Kata Kunci (max 2)
+  | "4.6" // Mutu Kebaruan/Novelty (max 5)
+  | "4.7" // Metodologi & Instrumen (max 4)
+  | "4.8" // Analisis & Pembahasan (max 4)
+  | "4.9" // Simpulan (max 1)
+  | "4.10" // Referensi Primer (max 1)
+  | "4.11" // Kemutakhiran Pustaka (max 1)
   // Pengelolaan Naskah
   | "5A" // Identitas Penulis (max 1)
   | "5B" // Sistematika Artikel (max 1)
@@ -54,7 +64,8 @@ export type IndicatorCode =
   | "art_referensi_primer"
   | "art_kemutakhiran_referensi"
   | "art_analisis"
-  | "art_simpulan";
+  | "art_simpulan"
+  | string;
 
 export type ScoreSource = "otomatis" | "estimasi_ai" | "verifikasi_manusia" | "belum_diisi";
 
