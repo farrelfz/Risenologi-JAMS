@@ -32,19 +32,62 @@ export function ReportViewModal({
   });
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex justify-center overflow-y-auto p-4 md:p-8 print:p-0 print:bg-white print:static">
-      {/* Container */}
-      <div className="relative w-full max-w-4xl bg-white text-slate-900 rounded-xl shadow-2xl overflow-hidden my-auto print:m-0 print:p-0 print:shadow-none print:w-full print:max-w-none print:rounded-none">
-        {/* Top Control Bar (Hidden on Print) */}
+    <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex justify-center overflow-y-auto p-4 md:p-8 print:p-0 print:bg-white print:static print:overflow-visible">
+      {/* Global CSS khusus untuk instruksi cetak PDF sempurna */}
+      <style jsx global>{`
+        @media print {
+          /* Sembunyikan seluruh elemen halaman di luar area laporan LED */
+          body * {
+            visibility: hidden !important;
+          }
+          #printable-led-report,
+          #printable-led-report * {
+            visibility: visible !important;
+          }
+          #printable-led-report {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 24px !important;
+            background: #ffffff !important;
+            color: #0f172a !important;
+            box-shadow: none !important;
+          }
+
+          /* Mencegah pemotongan baris tabel canggung antarhalaman */
+          tr {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+          .section-block {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+          }
+          h1, h2, h3 {
+            page-break-after: avoid !important;
+            break-after: avoid !important;
+          }
+          @page {
+            size: A4 portrait;
+            margin: 15mm 15mm 15mm 15mm;
+          }
+        }
+      `}</style>
+
+      {/* Modal Card Container */}
+      <div className="relative w-full max-w-4xl bg-white text-slate-900 rounded-2xl shadow-2xl overflow-hidden my-auto print:m-0 print:p-0 print:shadow-none print:w-full print:max-w-none print:rounded-none">
+        {/* Top Control Bar (Hidden when Printing) */}
         <div className="flex justify-between items-center p-4 bg-slate-900 text-white border-b border-slate-800 print:hidden">
           <div className="flex items-center gap-2">
             <Award className="h-5 w-5 text-amber-400" />
-            <span className="font-bold text-sm">Pratinjau Dokumen LED ARJUNA (Siap Cetak / PDF)</span>
+            <span className="font-bold text-sm">Pratinjau Dokumen LED ARJUNA (Format A4 PDF)</span>
           </div>
           <div className="flex items-center gap-2">
             <Button
               onClick={handlePrint}
-              className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow"
+              className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold shadow-md"
             >
               <Printer className="h-4 w-4" /> Cetak / Simpan PDF
             </Button>
@@ -60,11 +103,11 @@ export function ReportViewModal({
         </div>
 
         {/* Printable Document Body */}
-        <div id="printable-led-report" className="p-8 md:p-12 space-y-6 bg-white font-sans text-slate-900 print:p-6 print:space-y-4">
+        <div id="printable-led-report" className="p-8 md:p-12 space-y-6 bg-white font-sans text-slate-900 print:p-0 print:space-y-4">
           {/* HEADER / KOP LEMBAGA */}
-          <div className="border-b-2 border-slate-900 pb-4 flex justify-between items-start">
+          <div className="border-b-2 border-slate-900 pb-4 flex justify-between items-start section-block">
             <div>
-              <h1 className="text-lg md:text-xl font-black uppercase tracking-wider text-slate-900">
+              <h1 className="text-lg md:text-xl font-black uppercase tracking-wider text-slate-900 leading-tight">
                 LAPORAN EVALUASI DIRI (LED) AKREDITASI JURNAL
               </h1>
               <h2 className="text-xs md:text-sm font-bold text-slate-700 mt-0.5">
@@ -83,7 +126,7 @@ export function ReportViewModal({
           </div>
 
           {/* SECTION 1: IDENTITAS JURNAL & DESK EVALUATION */}
-          <div className="space-y-2 break-inside-avoid">
+          <div className="space-y-2 section-block">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 bg-slate-100 p-2 rounded border border-slate-200">
               I. IDENTITAS JURNAL & GERBANG EVALUASI ADMINISTRATIF
             </h3>
@@ -110,7 +153,7 @@ export function ReportViewModal({
           </div>
 
           {/* SECTION 2: REKAPITULASI SKOR ARJUNA (100 POIN) */}
-          <div className="space-y-2 break-inside-avoid">
+          <div className="space-y-2 section-block">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 bg-slate-100 p-2 rounded border border-slate-200">
               II. REKAPITULASI SKOR PENILAIAN INSTRUMEN ARJUNA (100 POIN)
             </h3>
@@ -153,7 +196,7 @@ export function ReportViewModal({
                 {indicators.map((item) => {
                   const score = item.savedScore !== null ? item.savedScore : item.autoScore;
                   return (
-                    <tr key={item.code} className="border-b border-slate-200 break-inside-avoid">
+                    <tr key={item.code} className="border-b border-slate-200">
                       <td className="border border-slate-300 p-1.5 font-bold text-center">{item.code}</td>
                       <td className="border border-slate-300 p-1.5 font-medium text-slate-900">{item.name}</td>
                       <td className="border border-slate-300 p-1.5 text-[10px] text-slate-600">{item.category}</td>
@@ -173,7 +216,7 @@ export function ReportViewModal({
           </div>
 
           {/* FOOTER KETERANGAN DOKUMEN DIGITAL (TANPA TANDA TANGAN) */}
-          <div className="pt-6 border-t-2 border-slate-200 text-center text-xs text-slate-500 break-inside-avoid">
+          <div className="pt-6 border-t-2 border-slate-200 text-center text-xs text-slate-500 section-block">
             <p className="font-medium italic">
               Dokumen Evaluasi Diri (LED) ini dihasilkan secara otomatis oleh sistem kecerdasan mutu Risenologi JAMS.
             </p>
